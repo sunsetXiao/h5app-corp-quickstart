@@ -23,7 +23,7 @@ class H5AppQSDeplist extends React.Component {
         dd.config({
             ...this.props.config,
             jsApiList: [
-                'biz.chat.openSingleChat'
+                'biz.chat.openSingleChat',
             ]
         })
         dd.error(err => {

@@ -12,3 +12,7 @@ application-dev.properties
 node_modules/
 
 /Permanent_Data
+
+.settings
+.project
+.classpath
