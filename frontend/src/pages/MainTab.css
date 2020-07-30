@@ -1,0 +1,10 @@
+.flex-container {
+  background-color: white;
+}
+
+.flex-item {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  margin: 15px 0;
+}

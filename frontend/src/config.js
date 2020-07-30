@@ -3,7 +3,7 @@ const config = {
     // 访问后端host请配置为本机IP的backend服务端口，如8080端口
     // 例如 host: 'http://192.168.1.2:8080',
     // 使用backend中构建结果访问时请将host指定为空
-    host: 'http://192.168.9.53:8080',
+    host: 'http://192.168.9.98:8080',
 }
 
 export default config;
