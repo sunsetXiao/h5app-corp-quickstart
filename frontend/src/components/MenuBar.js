@@ -6,82 +6,25 @@ import './MenuBar.css';
 const data = [
   {
     value: '1',
-    label: 'Food',
-    children: [
-      {
-        label: 'All Foods',
-        value: '1',
-        disabled: false,
-      },
-      {
-        label: 'Chinese Food',
-        value: '2',
-      },
-      {
-        label: 'Hot Pot',
-        value: '3',
-      },
-      {
-        label: 'Buffet',
-        value: '4',
-      },
-      {
-        label: 'Fast Food',
-        value: '5',
-      },
-      {
-        label: 'Snack',
-        value: '6',
-      },
-      {
-        label: 'Bread',
-        value: '7',
-      },
-      {
-        label: 'Fruit',
-        value: '8',
-      },
-      {
-        label: 'Noodle',
-        value: '9',
-      },
-      {
-        label: 'Leisure Food',
-        value: '10',
-      },
-    ],
+    label: '全部',
+    isLeaf: true,
   },
   {
     value: '2',
-    label: 'Supermarket',
+    label: '行业',
     children: [
       {
-        label: 'All Supermarkets',
+        label: '互联网',
         value: '1',
       },
       {
-        label: 'Supermarket',
+        label: '金融',
         value: '2',
-        disabled: true,
       },
       {
-        label: 'C-Store',
+        label: '教育',
         value: '3',
-      },
-      {
-        label: 'Personal Care',
-        value: '4',
-      },
-    ],
-  },
-  {
-    value: '3',
-    label: 'Extra',
-    isLeaf: true,
-    children: [
-      {
-        label: 'you can not see',
-        value: '1',
+        disabled: true,
       },
     ],
   },
@@ -93,6 +36,7 @@ class MenuBar extends React.Component {
     this.state = {
       initData: '',
       show: false,
+      label: '全部',
     };
   }
   onChange = (value) => {
@@ -109,6 +53,7 @@ class MenuBar extends React.Component {
         }
       }
     });
+    this.setState({ label, show: false });
     console.log(label);
   };
   handleClick = (e) => {
@@ -159,8 +104,10 @@ class MenuBar extends React.Component {
       <div className={show ? 'menu-active' : ''}>
         <div className="nav">
           <div className="nav-main" onClick={this.handleClick}>
-            <div style={{ marginLeft: '15px' }}>全部</div>
-            <span className="arrow-down" />
+            <div className={show ? 'text-show' : 'text-off'}>
+              {this.state.label}
+            </div>
+            <span className={show ? 'arrow-up' : 'arrow-down'} />
           </div>
           <div style={{ flex: 1, textAlign: 'center' }}> 筛选 </div>
           <div style={{ flex: 1, textAlign: 'center' }}> 排序 </div>
