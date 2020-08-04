@@ -3,12 +3,13 @@ import { TabBar } from 'antd-mobile';
 
 import MainTab from './MainTab';
 import ContactList from './ContactList';
+import CompanyList from './CompanyList';
 
 class MTabBar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedTab: 'contact',
+      selectedTab: 'company',
       hidden: false,
       fullScreen: false,
     };
@@ -147,17 +148,17 @@ class MTabBar extends React.Component {
                 }}
               />
             }
-            title="Friend"
-            key="Friend"
+            title="公司"
+            key="company"
             dot
-            selected={this.state.selectedTab === 'greenTab'}
+            selected={this.state.selectedTab === 'company'}
             onPress={() => {
               this.setState({
-                selectedTab: 'greenTab',
+                selectedTab: 'company',
               });
             }}
           >
-            {this.renderContent('Friend')}
+            <CompanyList />
           </TabBar.Item>
           <TabBar.Item
             icon={{
