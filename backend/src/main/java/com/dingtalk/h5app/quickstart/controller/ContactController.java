@@ -42,17 +42,20 @@ import static com.dingtalk.h5app.quickstart.config.UrlConstant.URL_USER_SIMPLELI
 public class ContactController {
     private static final Logger log = LoggerFactory.getLogger(ContactController.class);
 
+    @Autowired
     private TokenService tokenService;
+    @Autowired
     private AppConfig appConfig;
 
-    @Autowired
-    public ContactController(
-        TokenService tokenService,
-        AppConfig appConfig
-    ) {
-        this.tokenService = tokenService;
-        this.appConfig = appConfig;
-    }
+//    @Autowired
+//    public ContactController(
+//        TokenService tokenService,
+//        AppConfig appConfig
+//    ) {
+//        this.tokenService = tokenService;
+//        this.appConfig = appConfig;
+//        System.out.println("tokenService " + tokenService);
+//    }
 
     @GetMapping("/department/list")
     public ServiceResult<List<DepartmentDTO>> listDepartment(

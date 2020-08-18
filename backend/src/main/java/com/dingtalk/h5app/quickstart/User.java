@@ -1,11 +1,12 @@
-package com.dingtalk.h5app.quickstart.model;
+package com.dingtalk.h5app.quickstart;
 
+import org.hibernate.annotations.Proxy;
 import org.springframework.data.repository.CrudRepository;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 
+import javax.persistence.*;
+
+@Table(name = "userss")
+@Proxy(lazy = false)
 @Entity // This tells Hibernate to make a table out of this class
 public class User {
     @Id
