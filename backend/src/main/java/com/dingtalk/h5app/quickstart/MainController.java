@@ -2,9 +2,14 @@ package com.dingtalk.h5app.quickstart;
 
 import com.dingtalk.h5app.quickstart.dto.CompanyDto;
 import com.dingtalk.h5app.quickstart.model.Company;
-import com.dingtalk.h5app.quickstart.model.Industry;
+import com.dingtalk.h5app.quickstart.model.staicdata.City;
+import com.dingtalk.h5app.quickstart.model.staicdata.CompanyType;
+import com.dingtalk.h5app.quickstart.model.staicdata.Industry;
+import com.dingtalk.h5app.quickstart.model.staicdata.Province;
 import com.dingtalk.h5app.quickstart.repository.CompanyRepository;
-import com.dingtalk.h5app.quickstart.repository.IndustryRepository;
+import com.dingtalk.h5app.quickstart.repository.staticdata.CityRepository;
+import com.dingtalk.h5app.quickstart.repository.staticdata.IndustryRepository;
+import com.dingtalk.h5app.quickstart.repository.staticdata.ProvinceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,9 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Controller // This means that this class is a Controller
 @RequestMapping(path="/demo") // This means URL's start with /demo (after Application path)
@@ -29,6 +34,12 @@ public class MainController {
 
     @Autowired
     private IndustryRepository industryRepository;
+
+    @Autowired
+    private CityRepository cityRepository;
+
+    @Autowired
+    private ProvinceRepository provinceRepository;
 
     @PostMapping(path="/add") // Map ONLY POST Requests
     public @ResponseBody String addNewUser (@RequestParam String name
@@ -77,9 +88,35 @@ public class MainController {
         return industries;
     }
 
-    @GetMapping(path="/industryOne")
-    public @ResponseBody Industry industry() {
-        return industryRepository.findByName("行业1");
-    }
+    @GetMapping(path="/test")
+    public @ResponseBody void test() {
+//        Province province = new Province();
+//        province.setName("辽宁");
+//        Province p = provinceRepository.save(province);
+//        City c1 = new City();
+//        c1.setName("铁岭");
+//        c1.setProvince(p);
+//        City c2 = new City();
+//        c2.setName("沈阳");
+//        c2.setProvince(p);
+//        cityRepository.save(c1);
+//        cityRepository.save(c2);
 
+        Industry industry = new Industry();
+        industry.setName("金融");
+        industry.setCategory("c1");
+
+        industryRepository.save(industry);
+
+        Company c = new Company();
+        c.setName("公司1");
+        c.setIndustry(industry);
+        c.setType(CompanyType.technology);
+
+        City city = cityRepository.findByName("沈阳");
+        c.setCity(city);
+
+        companyRepository.save(c);
+
+    }
 }

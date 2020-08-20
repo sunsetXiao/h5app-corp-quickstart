@@ -1,11 +1,12 @@
-package com.dingtalk.h5app.quickstart.model;
+package com.dingtalk.h5app.quickstart.model.staicdata;
 
+import com.dingtalk.h5app.quickstart.model.Company;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Setter
@@ -22,7 +23,7 @@ public class Industry {
     private String category;
 
     @OneToMany(mappedBy = "industry", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<Company> companies;
+    private List<Company> companies;
 
 //    public Integer getId() {
 //        return id;
