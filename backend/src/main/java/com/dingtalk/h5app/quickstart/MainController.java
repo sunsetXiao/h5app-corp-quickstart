@@ -1,5 +1,6 @@
 package com.dingtalk.h5app.quickstart;
 
+import com.dingtalk.h5app.quickstart.dto.CompanyDto;
 import com.dingtalk.h5app.quickstart.model.Company;
 import com.dingtalk.h5app.quickstart.model.Industry;
 import com.dingtalk.h5app.quickstart.repository.CompanyRepository;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller // This means that this class is a Controller
@@ -48,7 +50,7 @@ public class MainController {
     }
 
     @GetMapping(path="/company")
-    public @ResponseBody Iterable<Company> listCompany() {
+    public @ResponseBody Iterable<CompanyDto> listCompany() {
         // This returns a JSON or XML with the users
 
 //        Industry industry = new Industry();
@@ -60,7 +62,9 @@ public class MainController {
 //        company.setIndustry(industry);
 //
 //        companyRepository.save(company);
-        return companyRepository.findAll();
+        List<CompanyDto> companyDtos = new ArrayList<>();
+        companyRepository.findAll().forEach(company -> companyDtos.add(new CompanyDto(company)));
+        return  companyDtos;
     }
 
     @GetMapping(path="/industry")
@@ -71,6 +75,11 @@ public class MainController {
             System.out.println(industry);
         }
         return industries;
+    }
+
+    @GetMapping(path="/industryOne")
+    public @ResponseBody Industry industry() {
+        return industryRepository.findByName("行业1");
     }
 
 }
