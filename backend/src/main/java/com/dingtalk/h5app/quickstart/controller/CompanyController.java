@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.criteria.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -100,6 +101,32 @@ public class CompanyController {
 
         Sort sort = new Sort(filterSortInput.getSortInput().getOrder(), filterSortInput.getSortInput().getField());
         Iterable<Company> companyList = companyRepository.findAll(spec, sort);
+        List<CompanyDto> companyDtoList = new ArrayList<CompanyDto>();
+        for (Company co : companyList) {
+            companyDtoList.add(new CompanyDto(co));
+        }
+        return ServiceResult.success(companyDtoList);
+    }
+
+    @GetMapping(value = "search")
+    public ServiceResult<List<CompanyDto>> search(
+            @RequestBody QueryInput queryInput
+    ) {
+        List<String> fieldList = Arrays.asList("name", "description", "note", "type", "projectName", "targetRegion", "field", "revenue", "financing", "team", "carrier", "output_tax", "investment");
+
+        Specification<Company> spec = new Specification<Company>() {
+            @Override
+            public Predicate toPredicate(Root<Company> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                List<Predicate> predicateList = new ArrayList<>();
+                for(String field: fieldList) {
+                    Predicate predicate = cb.like(root.get(field).as(String.class), "%"+queryInput.getQuery()+"%");
+                    predicateList.add(predicate);
+                }
+
+                return cb.or(predicateList.toArray(new Predicate[predicateList.size()]));
+            }
+        };
+        Iterable<Company> companyList = companyRepository.findAll(spec);
         List<CompanyDto> companyDtoList = new ArrayList<CompanyDto>();
         for (Company co : companyList) {
             companyDtoList.add(new CompanyDto(co));
