@@ -11,6 +11,7 @@ import com.dingtalk.h5app.quickstart.repository.staticdata.CityRepository;
 import com.dingtalk.h5app.quickstart.repository.staticdata.IndustryRepository;
 import com.dingtalk.h5app.quickstart.repository.staticdata.ProvinceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -97,7 +98,7 @@ public class MainController {
     }
 
     @GetMapping(path="/test")
-    public @ResponseBody Iterable<Company> test() {
+    public @ResponseBody Iterable<CompanyDto> test() {
 //        Province province = new Province();
 //        province.setName("辽宁");
 //        Province p = provinceRepository.save(province);
@@ -126,13 +127,25 @@ public class MainController {
                  * 第一个参数：需要比较的属性（path对象）
                  * 第二个参数：当前需要比较的取值
                  */
-                Predicate predicate = cb.equal(custId, "公司21");//进行精准的匹配  （比较的属性，比较的属性的取值）
-                return predicate;
+                Predicate predicate = cb.like(custId.as(String.class), "%公司%");
+                Predicate predicate1 = cb.like(root.get("id").as(String.class), "%1%");
+
+                List<Predicate> predicateList = new ArrayList<>();
+                predicateList.add(predicate);
+                predicateList.add(predicate1);
+                return cb.and(predicateList.toArray(new Predicate[predicateList.size()]));
+//                return cb.disjunction();
+//                return ;
             }
         };
 
-        Iterable<Company> customer = companyRepository.findAll(spec);
-        return customer;
+        Sort sort = new Sort(Sort.Direction.DESC,"id");
+        Iterable<Company> customer = companyRepository.findAll(spec, sort);
+        List<CompanyDto> cd = new ArrayList<CompanyDto>();
+        for (Company co : customer) {
+            cd.add(new CompanyDto(co));
+        }
+        return cd;
 
 //        Industry industry = new Industry();
 //        industry.setName("金融");

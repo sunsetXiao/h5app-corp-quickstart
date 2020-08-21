@@ -1,9 +1,7 @@
 package com.dingtalk.h5app.quickstart.controller;
 
 import com.dingtalk.h5app.quickstart.domain.ServiceResult;
-import com.dingtalk.h5app.quickstart.dto.CompanyCreateInput;
-import com.dingtalk.h5app.quickstart.dto.CompanyDto;
-import com.dingtalk.h5app.quickstart.dto.IdInput;
+import com.dingtalk.h5app.quickstart.dto.*;
 import com.dingtalk.h5app.quickstart.model.Company;
 import com.dingtalk.h5app.quickstart.model.staicdata.City;
 import com.dingtalk.h5app.quickstart.model.staicdata.Industry;
@@ -13,9 +11,13 @@ import com.dingtalk.h5app.quickstart.repository.staticdata.IndustryRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.Id;
+import javax.persistence.criteria.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -77,5 +79,31 @@ public class CompanyController {
         CompanyDto companyDto = new CompanyDto(company.get());
 
         return ServiceResult.success(companyDto);
+    }
+
+    @GetMapping(value = "findAll")
+    public ServiceResult<List<CompanyDto>> findAll(
+            @RequestBody FilterSortInput filterSortInput
+    ) {
+        Specification<Company> spec = new Specification<Company>() {
+            @Override
+            public Predicate toPredicate(Root<Company> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                List<Predicate> predicateList = new ArrayList<>();
+                for(FilterInput filterInput: filterSortInput.getFilterInputList()) {
+                    Predicate predicate = cb.like(root.get(filterInput.getField()).as(String.class), "%"+filterInput.getValue()+"%");
+                    predicateList.add(predicate);
+                }
+
+                return cb.and(predicateList.toArray(new Predicate[predicateList.size()]));
+            }
+        };
+
+        Sort sort = new Sort(filterSortInput.getSortInput().getOrder(), filterSortInput.getSortInput().getField());
+        Iterable<Company> companyList = companyRepository.findAll(spec, sort);
+        List<CompanyDto> companyDtoList = new ArrayList<CompanyDto>();
+        for (Company co : companyList) {
+            companyDtoList.add(new CompanyDto(co));
+        }
+        return ServiceResult.success(companyDtoList);
     }
 }
