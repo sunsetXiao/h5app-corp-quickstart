@@ -26,8 +26,21 @@ public class CompanyDto {
 //    private String output_tax;
 //    private String investment;
     private Integer id;
-
     private String name;
+    private String industry_name;
+    private String city_name;
+    private String province_name;
+    private String description;
+    private String note;
+    private String type;
+    private String targetRegion;
+    private String field;
+    private String revenue;
+    private String financing;
+    private String team;
+    private String carrier;
+    private String output_tax;
+    private String investment;
 
 //    private Industry industry;
     public CompanyDto() {
@@ -36,5 +49,19 @@ public class CompanyDto {
     public CompanyDto(Company company) {
         this.id = company.getId();
         this.name = company.getName();
+        this.industry_name = company.getIndustry().getName();
+        this.city_name = company.getCity().getName();
+        this.province_name = company.getCity().getProvince().getName();
+        this.description = company.getDescription();
+        this.note = company.getNote();
+        this.type = company.getType().toString();
+        this.targetRegion = company.getTargetRegion();
+        this.field = company.getField();
+        this.revenue = company.getRevenue();
+        this.financing = company.getFinancing();
+        this.team = company.getTeam();
+        this.carrier = company.getCarrier();
+        this.output_tax = company.getOutput_tax();
+        this.investment = company.getInvestment();
     }
 }

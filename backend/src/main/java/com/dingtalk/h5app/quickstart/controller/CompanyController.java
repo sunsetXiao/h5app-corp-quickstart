@@ -3,6 +3,7 @@ package com.dingtalk.h5app.quickstart.controller;
 import com.dingtalk.h5app.quickstart.domain.ServiceResult;
 import com.dingtalk.h5app.quickstart.dto.CompanyCreateInput;
 import com.dingtalk.h5app.quickstart.dto.CompanyDto;
+import com.dingtalk.h5app.quickstart.dto.IdInput;
 import com.dingtalk.h5app.quickstart.model.Company;
 import com.dingtalk.h5app.quickstart.model.staicdata.City;
 import com.dingtalk.h5app.quickstart.model.staicdata.Industry;
@@ -14,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.Id;
 import java.util.Optional;
 
 @RestController
@@ -63,4 +65,17 @@ public class CompanyController {
         return ServiceResult.success(company.getId());
     }
 
+    @GetMapping(value = "/findById")
+    public ServiceResult<CompanyDto> findById(
+            @RequestBody IdInput idInput
+    ) {
+        Optional<Company> company = companyRepository.findById(idInput.getId());
+        if (!company.isPresent()) {
+            return ServiceResult.success(null);
+        }
+
+        CompanyDto companyDto = new CompanyDto(company.get());
+
+        return ServiceResult.success(companyDto);
+    }
 }

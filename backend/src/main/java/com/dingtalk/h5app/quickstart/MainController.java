@@ -11,6 +11,7 @@ import com.dingtalk.h5app.quickstart.repository.staticdata.CityRepository;
 import com.dingtalk.h5app.quickstart.repository.staticdata.IndustryRepository;
 import com.dingtalk.h5app.quickstart.repository.staticdata.ProvinceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,8 +19,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Controller // This means that this class is a Controller
@@ -40,6 +45,9 @@ public class MainController {
 
     @Autowired
     private ProvinceRepository provinceRepository;
+
+    @PersistenceContext
+    private EntityManager em;
 
     @PostMapping(path="/add") // Map ONLY POST Requests
     public @ResponseBody String addNewUser (@RequestParam String name
@@ -89,7 +97,7 @@ public class MainController {
     }
 
     @GetMapping(path="/test")
-    public @ResponseBody void test() {
+    public @ResponseBody Iterable<Company> test() {
 //        Province province = new Province();
 //        province.setName("辽宁");
 //        Province p = provinceRepository.save(province);
@@ -102,21 +110,45 @@ public class MainController {
 //        cityRepository.save(c1);
 //        cityRepository.save(c2);
 
-        Industry industry = new Industry();
-        industry.setName("金融");
-        industry.setCategory("c1");
+//        CriteriaBuilder builder = em.getCriteriaBuilder();
+//        CriteriaQuery<Company> query = builder.createQuery(Company.class);
+//        Root<Company> root = query.from(Company.class);
+//
+//        Predicate isOne = builder.equal(root.get("name"), "公司1");
 
-        industryRepository.save(industry);
+        Specification<Company> spec = new Specification<Company>() {
+            @Override
+            public Predicate toPredicate(Root<Company> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                //1.获取比较的属性
+                Path<Object> custId = root.get("name");//查询的式属性名，不是表的字段名
+                //2.构造查询条件  ：    select * from cst_customer where cust_id = 3
+                /**
+                 * 第一个参数：需要比较的属性（path对象）
+                 * 第二个参数：当前需要比较的取值
+                 */
+                Predicate predicate = cb.equal(custId, "公司21");//进行精准的匹配  （比较的属性，比较的属性的取值）
+                return predicate;
+            }
+        };
 
-        Company c = new Company();
-        c.setName("公司1");
-        c.setIndustry(industry);
-        c.setType(CompanyType.technology);
+        Iterable<Company> customer = companyRepository.findAll(spec);
+        return customer;
 
-        City city = cityRepository.findByName("沈阳");
-        c.setCity(city);
-
-        companyRepository.save(c);
+//        Industry industry = new Industry();
+//        industry.setName("金融");
+//        industry.setCategory("c1");
+//
+//        industryRepository.save(industry);
+//
+//        Company c = new Company();
+//        c.setName("公司1");
+//        c.setIndustry(industry);
+//        c.setType(CompanyType.technology);
+//
+//        City city = cityRepository.findByName("沈阳");
+//        c.setCity(city);
+//
+//        companyRepository.save(c);
 
     }
 }
