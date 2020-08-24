@@ -1,150 +1,152 @@
 package com.dingtalk.h5app.quickstart.controller;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import com.dingtalk.api.DefaultDingTalkClient;
-import com.dingtalk.api.DingTalkClient;
-import com.dingtalk.api.request.OapiDepartmentListRequest;
-import com.dingtalk.api.request.OapiUserSimplelistRequest;
-import com.dingtalk.api.response.OapiDepartmentListResponse;
-import com.dingtalk.api.response.OapiDepartmentListResponse.Department;
-import com.dingtalk.api.response.OapiUserSimplelistResponse;
-import com.dingtalk.api.response.OapiUserSimplelistResponse.Userlist;
-import com.dingtalk.h5app.quickstart.config.AppConfig;
-import com.dingtalk.h5app.quickstart.domain.DepartmentDTO;
 import com.dingtalk.h5app.quickstart.domain.ServiceResult;
-import com.dingtalk.h5app.quickstart.domain.UserDTO;
-import com.dingtalk.h5app.quickstart.service.TokenService;
-import com.taobao.api.ApiException;
-import org.apache.commons.collections4.CollectionUtils;
+import com.dingtalk.h5app.quickstart.dto.FilterInput;
+import com.dingtalk.h5app.quickstart.dto.FilterSortInput;
+import com.dingtalk.h5app.quickstart.dto.IdInput;
+import com.dingtalk.h5app.quickstart.dto.QueryInput;
+import com.dingtalk.h5app.quickstart.dto.contact.ContactDto;
+import com.dingtalk.h5app.quickstart.dto.contact.ContactCreateInput;
+import com.dingtalk.h5app.quickstart.dto.contact.ContactUpdateInput;
+import com.dingtalk.h5app.quickstart.model.Contact;
+import com.dingtalk.h5app.quickstart.repository.ContactRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.web.bind.annotation.*;
 
-import static com.dingtalk.h5app.quickstart.config.UrlConstant.URL_DEPARTMENT_LIST;
-import static com.dingtalk.h5app.quickstart.config.UrlConstant.URL_USER_SIMPLELIST;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
-/**
- * 微应用QuickStart示例，访问联系人API
- *
- * @author openapi@dingtalk
- * @date 2020/2/4
- */
 @RestController
-@CrossOrigin("*") // NOTE：此处仅为本地调试使用，为避免安全风险，生产环境请勿设置CORS为 '*'
+@RequestMapping(path = "/contact")
+@CrossOrigin("*")
 public class ContactController {
     private static final Logger log = LoggerFactory.getLogger(ContactController.class);
 
     @Autowired
-    private TokenService tokenService;
-    @Autowired
-    private AppConfig appConfig;
+    private ContactRepository contactRepository;
 
-//    @Autowired
-//    public ContactController(
-//        TokenService tokenService,
-//        AppConfig appConfig
-//    ) {
-//        this.tokenService = tokenService;
-//        this.appConfig = appConfig;
-//        System.out.println("tokenService " + tokenService);
-//    }
-
-    @GetMapping("/department/list")
-    public ServiceResult<List<DepartmentDTO>> listDepartment(
-        @RequestParam(value = "id", required = false, defaultValue = "1") String id
+    @PostMapping(value = "/create")
+    public ServiceResult<ContactDto> create(
+            @RequestBody ContactCreateInput contactCreateInput
     ) {
-        String accessToken;
-        // 获取accessToken
-        ServiceResult<String> accessTokenSr = tokenService.getAccessToken();
-        if (!accessTokenSr.isSuccess()) {
-            return ServiceResult.failure(accessTokenSr.getCode(), accessTokenSr.getMessage());
-        }
-        accessToken = accessTokenSr.getResult();
+        Contact contact = new Contact();
 
-        DingTalkClient client = new DefaultDingTalkClient(URL_DEPARTMENT_LIST);
-        OapiDepartmentListRequest request = new OapiDepartmentListRequest();
-        request.setId(id);
-        request.setHttpMethod("GET");
+        contact.setAddress(contactCreateInput.getAddress());
+        contact.setName(contactCreateInput.getName());
+        contact.setMobile(contactCreateInput.getMobile());
+        contact.setPhone(contactCreateInput.getPhone());
+        contact.setPosition(contactCreateInput.getPosition());
+        contact.setImage(contactCreateInput.getImage());
 
-        OapiDepartmentListResponse response;
-        try {
-            response = client.execute(request, accessToken);
-        } catch (ApiException e) {
-            log.error("Failed to {}", URL_DEPARTMENT_LIST, e);
-            return ServiceResult.failure(e.getErrCode(), "Failed to listDepartment: " + e.getErrMsg());
-        }
-        if (!response.isSuccess()) {
-            return ServiceResult.failure(response.getErrorCode(), response.getErrmsg());
-        }
-
-        if (CollectionUtils.isNotEmpty(response.getDepartment())) {
-            List<DepartmentDTO> results = new ArrayList<>(response.getDepartment().size());
-            for (Department department : response.getDepartment()) {
-                DepartmentDTO departmentDTO = new DepartmentDTO();
-                departmentDTO.setId(department.getId());
-                departmentDTO.setName(department.getName());
-                departmentDTO.setCreateDeptGroup(department.getCreateDeptGroup());
-                departmentDTO.setAutoAddUser(department.getAutoAddUser());
-                departmentDTO.setParentid(department.getParentid());
-                results.add(departmentDTO);
-            }
-            return ServiceResult.success(results);
-        }
-        return ServiceResult.success(Collections.emptyList());
+        contactRepository.save(contact);
+        ContactDto contactDto = new ContactDto(contact);
+        return ServiceResult.success(contactDto);
     }
 
-    @GetMapping("/user/simplelist")
-    public ServiceResult<List<UserDTO>> listDepartmentUsers(
-        @RequestParam("department_id") Long id,
-        @RequestParam(name = "offset", required = false, defaultValue = "1") Long offset,
-        @RequestParam(name = "size", required = false, defaultValue = "50") Long size,
-        @RequestParam(name = "order", required = false, defaultValue = "entry_desc") String order
+    @PostMapping(value = "/update")
+    public ServiceResult<ContactDto> update(
+            @RequestBody ContactUpdateInput contactUpdateInput
     ) {
-        String accessToken;
-        // 获取accessToken
-        ServiceResult<String> accessTokenSr = tokenService.getAccessToken();
-        if (!accessTokenSr.isSuccess()) {
-            return ServiceResult.failure(accessTokenSr.getCode(), accessTokenSr.getMessage());
-        }
-        accessToken = accessTokenSr.getResult();
+        Contact contact = contactRepository.getOne(contactUpdateInput.getId());
 
-        DingTalkClient client = new DefaultDingTalkClient(URL_USER_SIMPLELIST);
-        OapiUserSimplelistRequest request = new OapiUserSimplelistRequest();
-        request.setDepartmentId(id);
-        request.setOffset(offset);
-        request.setSize(size);
-        request.setOrder(order);
-        request.setHttpMethod("GET");
-
-        OapiUserSimplelistResponse response;
-        try {
-            response = client.execute(request, accessToken);
-        } catch (ApiException e) {
-            log.error("Failed to {}", URL_DEPARTMENT_LIST, e);
-            return ServiceResult.failure(e.getErrCode(), "Failed to listDepartment: " + e.getErrMsg());
+        if (contactUpdateInput.getAddress() != null) {
+            contact.setAddress(contactUpdateInput.getAddress());
         }
-        if (!response.isSuccess()) {
-            return ServiceResult.failure(response.getErrorCode(), response.getErrmsg());
+        if (contactUpdateInput.getName() != null) {
+            contact.setName(contactUpdateInput.getName());
+        }
+        if (contactUpdateInput.getMobile() != null) {
+            contact.setMobile(contactUpdateInput.getMobile());
+        }
+        if (contactUpdateInput.getPhone() != null) {
+            contact.setPhone(contactUpdateInput.getPhone());
+        }
+        if (contactUpdateInput.getPosition() != null) {
+            contact.setPosition(contactUpdateInput.getPosition());
+        }
+        if (contactUpdateInput.getImage() != null) {
+            contact.setImage(contactUpdateInput.getImage());
         }
 
-        if (CollectionUtils.isNotEmpty(response.getUserlist())) {
-            List<UserDTO> results = new ArrayList<>(response.getUserlist().size());
-            for (Userlist userlist : response.getUserlist()) {
-                UserDTO user = new UserDTO();
-                user.setUserid(userlist.getUserid());
-                user.setName(userlist.getName());
-                results.add(user);
+        contactRepository.save(contact);
+        ContactDto contactDto = new ContactDto(contact);
+        return ServiceResult.success(contactDto);
+    }
+
+    @GetMapping(value = "/findById")
+    public ServiceResult<ContactDto> findById(
+            @RequestBody IdInput idInput
+    ) {
+        Optional<Contact> contact = contactRepository.findById(idInput.getId());
+        if (!contact.isPresent()) {
+            return ServiceResult.success(null);
+        }
+
+        ContactDto contactDto = new ContactDto(contact.get());
+
+        return ServiceResult.success(contactDto);
+    }
+
+    @GetMapping(value = "findAll")
+    public ServiceResult<List<ContactDto>> findAll(
+            @RequestBody FilterSortInput filterSortInput
+    ) {
+        Specification<Contact> spec = new Specification<Contact>() {
+            @Override
+            public Predicate toPredicate(Root<Contact> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                List<Predicate> predicateList = new ArrayList<>();
+                for(FilterInput filterInput: filterSortInput.getFilterInputList()) {
+                    Predicate predicate = cb.like(root.get(filterInput.getField()).as(String.class), "%"+filterInput.getValue()+"%");
+                    predicateList.add(predicate);
+                }
+
+                return cb.and(predicateList.toArray(new Predicate[predicateList.size()]));
             }
-            return ServiceResult.success(results);
+        };
+
+        Sort sort = new Sort(filterSortInput.getSortInput().getOrder(), filterSortInput.getSortInput().getField());
+        Iterable<Contact> contactList = contactRepository.findAll(spec, sort);
+        List<ContactDto> contactDtoList = new ArrayList<ContactDto>();
+        for (Contact co : contactList) {
+            contactDtoList.add(new ContactDto(co));
         }
-        return ServiceResult.success(Collections.emptyList());
+        return ServiceResult.success(contactDtoList);
+    }
+
+    @GetMapping(value = "search")
+    public ServiceResult<List<ContactDto>> search(
+            @RequestBody QueryInput queryInput
+    ) {
+        List<String> fieldList = Arrays.asList("address", "name", "mobile", "phone", "position");
+
+
+        Specification<Contact> spec = new Specification<Contact>() {
+            @Override
+            public Predicate toPredicate(Root<Contact> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                List<Predicate> predicateList = new ArrayList<>();
+                for(String field: fieldList) {
+                    Predicate predicate = cb.like(root.get(field).as(String.class), "%"+queryInput.getQuery()+"%");
+                    predicateList.add(predicate);
+                }
+
+                return cb.or(predicateList.toArray(new Predicate[predicateList.size()]));
+            }
+        };
+        Iterable<Contact> contactList = contactRepository.findAll(spec);
+        List<ContactDto> contactDtoList = new ArrayList<ContactDto>();
+        for (Contact co : contactList) {
+            contactDtoList.add(new ContactDto(co));
+        }
+        return ServiceResult.success(contactDtoList);
     }
 }

@@ -20,7 +20,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.criteria.*;
-import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -45,7 +44,7 @@ public class CompanyController {
     private ProvinceRepository provinceRepository;
 
     @PostMapping(value = "/create")
-    public ServiceResult<Integer> create(
+    public ServiceResult<CompanyDto> create(
             @RequestBody CompanyCreateInput companyCreateInput
             ) {
         Company company = new Company();
@@ -73,7 +72,9 @@ public class CompanyController {
 
         companyRepository.save(company);
 
-        return ServiceResult.success(company.getId());
+        CompanyDto companyDto = new CompanyDto(company);
+
+        return ServiceResult.success(companyDto);
     }
 
     @GetMapping(value = "/findById")
