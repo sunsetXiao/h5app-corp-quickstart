@@ -1,7 +1,9 @@
 package com.dingtalk.h5app.quickstart.dto.company;
 
+import com.dingtalk.h5app.quickstart.dto.contact.ContactDto;
 import com.dingtalk.h5app.quickstart.dto.progress.ProgressDto;
 import com.dingtalk.h5app.quickstart.model.Company;
+import com.dingtalk.h5app.quickstart.model.Contact;
 import com.dingtalk.h5app.quickstart.model.Progress;
 import lombok.Getter;
 import lombok.Setter;
@@ -47,12 +49,17 @@ public class CompanyDto {
     private String investment;
 
     private List<ProgressDto> progressList;
+    private List<ContactDto> contactList;
 
 //    private Industry industry;
     public CompanyDto() {
 
     }
     public CompanyDto(Company company) {
+        this(company, "");
+    }
+
+    public CompanyDto(Company company, String ignore) {
         this.id = company.getId();
         this.name = company.getName();
         this.industry_name = company.getIndustry().getName();
@@ -70,9 +77,18 @@ public class CompanyDto {
         this.output_tax = company.getOutput_tax();
         this.investment = company.getInvestment();
 
-        this.progressList = new ArrayList<>();
-        for (Progress progress: company.getProgressList()) {
-            this.progressList.add(new ProgressDto(progress));
+        if (company.getProgressList() != null && ignore != "progress") {
+            this.progressList = new ArrayList<>();
+            for (Progress progress: company.getProgressList()) {
+                this.progressList.add(new ProgressDto(progress));
+            }
+        }
+
+        if (company.getContactList() != null && ignore != "contact") {
+            this.contactList = new ArrayList<>();
+            for (Contact contact: company.getContactList()) {
+                this.contactList.add(new ContactDto(contact, "company"));
+            }
         }
     }
 }

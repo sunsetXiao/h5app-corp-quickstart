@@ -1,14 +1,13 @@
 package com.dingtalk.h5app.quickstart.controller;
 
 import com.dingtalk.h5app.quickstart.domain.ServiceResult;
-import com.dingtalk.h5app.quickstart.dto.FilterInput;
-import com.dingtalk.h5app.quickstart.dto.FilterSortInput;
-import com.dingtalk.h5app.quickstart.dto.IdInput;
-import com.dingtalk.h5app.quickstart.dto.QueryInput;
+import com.dingtalk.h5app.quickstart.dto.*;
 import com.dingtalk.h5app.quickstart.dto.contact.ContactDto;
 import com.dingtalk.h5app.quickstart.dto.contact.ContactCreateInput;
 import com.dingtalk.h5app.quickstart.dto.contact.ContactUpdateInput;
+import com.dingtalk.h5app.quickstart.model.Company;
 import com.dingtalk.h5app.quickstart.model.Contact;
+import com.dingtalk.h5app.quickstart.repository.CompanyRepository;
 import com.dingtalk.h5app.quickstart.repository.ContactRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +33,9 @@ public class ContactController {
 
     @Autowired
     private ContactRepository contactRepository;
+
+    @Autowired
+    private CompanyRepository companyRepository;
 
     @PostMapping(value = "/create")
     public ServiceResult<ContactDto> create(
@@ -148,5 +150,24 @@ public class ContactController {
             contactDtoList.add(new ContactDto(co));
         }
         return ServiceResult.success(contactDtoList);
+    }
+
+    @PostMapping(value = "/updateCompany")
+    public ServiceResult<ContactDto> updateCompany(
+            @RequestBody IdListInput idListInput
+    ) {
+        Contact contact = contactRepository.getOne(idListInput.getId());
+        List<Company> companyList = new ArrayList<>();
+
+        for (Integer id: idListInput.getIdList()) {
+            Company company = companyRepository.getOne(id);
+            companyList.add(company);
+        }
+
+        contact.setCompanyList(companyList);
+        contactRepository.save(contact);
+
+        ContactDto contactDto = new ContactDto(contact);
+        return ServiceResult.success(contactDto);
     }
 }

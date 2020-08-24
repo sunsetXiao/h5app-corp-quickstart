@@ -33,5 +33,10 @@ public class Contact {
     private String position;
     private String image;
 
-//    private List<Company> companyList;
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "company_contact",
+            joinColumns = @JoinColumn(name = "contact_id"),
+            inverseJoinColumns = @JoinColumn(name = "company_id"))
+    private List<Company> companyList;
 }
