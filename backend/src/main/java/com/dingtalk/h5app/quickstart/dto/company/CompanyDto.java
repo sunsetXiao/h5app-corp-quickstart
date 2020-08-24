@@ -2,9 +2,11 @@ package com.dingtalk.h5app.quickstart.dto.company;
 
 import com.dingtalk.h5app.quickstart.dto.contact.ContactDto;
 import com.dingtalk.h5app.quickstart.dto.progress.ProgressDto;
+import com.dingtalk.h5app.quickstart.dto.schedule.ScheduleDto;
 import com.dingtalk.h5app.quickstart.model.Company;
 import com.dingtalk.h5app.quickstart.model.Contact;
 import com.dingtalk.h5app.quickstart.model.Progress;
+import com.dingtalk.h5app.quickstart.model.Schedule;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -50,6 +52,7 @@ public class CompanyDto {
 
     private List<ProgressDto> progressList;
     private List<ContactDto> contactList;
+    private List<ScheduleDto> scheduleList;
 
 //    private Industry industry;
     public CompanyDto() {
@@ -83,11 +86,16 @@ public class CompanyDto {
                 this.progressList.add(new ProgressDto(progress));
             }
         }
-
         if (company.getContactList() != null && ignore != "contact") {
             this.contactList = new ArrayList<>();
             for (Contact contact: company.getContactList()) {
                 this.contactList.add(new ContactDto(contact, "company"));
+            }
+        }
+        if (company.getScheduleList() != null && ignore != "schedule") {
+            this.scheduleList = new ArrayList<>();
+            for (Schedule schedule: company.getScheduleList()) {
+                this.scheduleList.add(new ScheduleDto(schedule, "company"));
             }
         }
     }
