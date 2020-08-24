@@ -2,12 +2,16 @@ package com.dingtalk.h5app.quickstart.controller;
 
 import com.dingtalk.h5app.quickstart.domain.ServiceResult;
 import com.dingtalk.h5app.quickstart.dto.*;
+import com.dingtalk.h5app.quickstart.dto.company.CompanyCreateInput;
+import com.dingtalk.h5app.quickstart.dto.company.CompanyDto;
+import com.dingtalk.h5app.quickstart.dto.company.CompanyUpdateInput;
 import com.dingtalk.h5app.quickstart.model.Company;
 import com.dingtalk.h5app.quickstart.model.staicdata.City;
 import com.dingtalk.h5app.quickstart.model.staicdata.Industry;
 import com.dingtalk.h5app.quickstart.repository.CompanyRepository;
 import com.dingtalk.h5app.quickstart.repository.staticdata.CityRepository;
 import com.dingtalk.h5app.quickstart.repository.staticdata.IndustryRepository;
+import com.dingtalk.h5app.quickstart.repository.staticdata.ProvinceRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +20,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.criteria.*;
+import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -34,7 +39,10 @@ public class CompanyController {
     private IndustryRepository industryRepository;
 
     @Autowired
-    private  CityRepository cityRepository;
+    private CityRepository cityRepository;
+
+    @Autowired
+    private ProvinceRepository provinceRepository;
 
     @PostMapping(value = "/create")
     public ServiceResult<Integer> create(
@@ -133,4 +141,69 @@ public class CompanyController {
         }
         return ServiceResult.success(companyDtoList);
     }
+
+    @PostMapping(value = "/update")
+    public ServiceResult<CompanyDto> update(
+            @RequestBody CompanyUpdateInput companyUpdateInput
+    ) {
+        Company company = companyRepository.getOne(companyUpdateInput.getId());
+
+        company.setName(companyUpdateInput.getName());
+
+        if (companyUpdateInput.getIndustry_id() != null) {
+            Optional<Industry> industry = industryRepository.findById(companyUpdateInput.getIndustry_id());
+            if (industry.isPresent()) {
+                company.setIndustry(industry.get());
+            }
+        }
+
+        if (companyUpdateInput.getCity_id() != null) {
+            Optional<City> city = cityRepository.findById(companyUpdateInput.getCity_id());
+            if (city.isPresent()) {
+                company.setCity(city.get());
+            }
+        }
+
+        if (companyUpdateInput.getDescription() != null) {
+            company.setDescription(companyUpdateInput.getDescription());
+        }
+        if (companyUpdateInput.getNote() != null) {
+            company.setNote(companyUpdateInput.getNote());
+        }
+        if (companyUpdateInput.getType() != null) {
+            company.setType(companyUpdateInput.getType());
+        }
+        if (companyUpdateInput.getProjectName() != null) {
+            company.setProjectName(companyUpdateInput.getProjectName());
+        }
+        if (companyUpdateInput.getTargetRegion() != null) {
+            company.setTargetRegion(companyUpdateInput.getTargetRegion());
+        }
+        if (companyUpdateInput.getField() != null) {
+            company.setField(companyUpdateInput.getField());
+        }
+        if (companyUpdateInput.getRevenue() != null) {
+            company.setRevenue(companyUpdateInput.getRevenue());
+        }
+        if (companyUpdateInput.getFinancing() != null) {
+            company.setFinancing(companyUpdateInput.getFinancing());
+        }
+        if (companyUpdateInput.getTeam() != null) {
+            company.setTeam(companyUpdateInput.getTeam());
+        }
+        if (companyUpdateInput.getCarrier() != null) {
+            company.setCarrier(companyUpdateInput.getCarrier());
+        }
+        if (companyUpdateInput.getOutput_tax() != null) {
+            company.setOutput_tax(companyUpdateInput.getOutput_tax());
+        }
+        if (companyUpdateInput.getInvestment() != null) {
+            company.setInvestment(companyUpdateInput.getInvestment());
+        }
+        companyRepository.save(company);
+
+        CompanyDto companyDto = new CompanyDto(company);
+        return ServiceResult.success(companyDto);
+    }
+
 }

@@ -1,11 +1,8 @@
 package com.dingtalk.h5app.quickstart;
 
-import com.dingtalk.h5app.quickstart.dto.CompanyDto;
+import com.dingtalk.h5app.quickstart.dto.company.CompanyDto;
 import com.dingtalk.h5app.quickstart.model.Company;
-import com.dingtalk.h5app.quickstart.model.staicdata.City;
-import com.dingtalk.h5app.quickstart.model.staicdata.CompanyType;
 import com.dingtalk.h5app.quickstart.model.staicdata.Industry;
-import com.dingtalk.h5app.quickstart.model.staicdata.Province;
 import com.dingtalk.h5app.quickstart.repository.CompanyRepository;
 import com.dingtalk.h5app.quickstart.repository.staticdata.CityRepository;
 import com.dingtalk.h5app.quickstart.repository.staticdata.IndustryRepository;
@@ -25,8 +22,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 
 @Controller // This means that this class is a Controller
 @RequestMapping(path="/demo") // This means URL's start with /demo (after Application path)

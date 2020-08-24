@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Table(name = "company")
 @Setter
@@ -52,4 +53,7 @@ public class Company {
     private String carrier;
     private String output_tax;
     private String investment;
+
+    @OneToMany(mappedBy = "company", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Progress> progressList;
 }

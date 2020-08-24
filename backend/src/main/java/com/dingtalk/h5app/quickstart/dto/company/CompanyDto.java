@@ -1,10 +1,14 @@
-package com.dingtalk.h5app.quickstart.dto;
+package com.dingtalk.h5app.quickstart.dto.company;
 
+import com.dingtalk.h5app.quickstart.dto.progress.ProgressDto;
 import com.dingtalk.h5app.quickstart.model.Company;
-import com.dingtalk.h5app.quickstart.model.staicdata.CompanyType;
+import com.dingtalk.h5app.quickstart.model.Progress;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -42,6 +46,8 @@ public class CompanyDto {
     private String output_tax;
     private String investment;
 
+    private List<ProgressDto> progressList;
+
 //    private Industry industry;
     public CompanyDto() {
 
@@ -63,5 +69,10 @@ public class CompanyDto {
         this.carrier = company.getCarrier();
         this.output_tax = company.getOutput_tax();
         this.investment = company.getInvestment();
+
+        this.progressList = new ArrayList<>();
+        for (Progress progress: company.getProgressList()) {
+            this.progressList.add(new ProgressDto(progress));
+        }
     }
 }

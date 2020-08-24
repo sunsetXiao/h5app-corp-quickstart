@@ -1,15 +1,19 @@
-package com.dingtalk.h5app.quickstart.dto;
+package com.dingtalk.h5app.quickstart.dto.company;
 
+import com.dingtalk.h5app.quickstart.model.Company;
 import com.dingtalk.h5app.quickstart.model.staicdata.CompanyType;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.Optional;
 
 @Getter
 @Setter
 @ToString
-public class CompanyCreateInput {
+public class CompanyUpdateInput {
+    private Integer id;
+
     private String name;
     private Integer industry_id;
     private Integer city_id;
@@ -25,4 +29,5 @@ public class CompanyCreateInput {
     private String carrier;
     private String output_tax;
     private String investment;
+
 }
