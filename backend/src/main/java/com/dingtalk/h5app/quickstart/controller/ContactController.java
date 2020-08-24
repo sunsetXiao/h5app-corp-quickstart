@@ -55,36 +55,6 @@ public class ContactController {
         return ServiceResult.success(contactDto);
     }
 
-    @PostMapping(value = "/update")
-    public ServiceResult<ContactDto> update(
-            @RequestBody ContactUpdateInput contactUpdateInput
-    ) {
-        Contact contact = contactRepository.getOne(contactUpdateInput.getId());
-
-        if (contactUpdateInput.getAddress() != null) {
-            contact.setAddress(contactUpdateInput.getAddress());
-        }
-        if (contactUpdateInput.getName() != null) {
-            contact.setName(contactUpdateInput.getName());
-        }
-        if (contactUpdateInput.getMobile() != null) {
-            contact.setMobile(contactUpdateInput.getMobile());
-        }
-        if (contactUpdateInput.getPhone() != null) {
-            contact.setPhone(contactUpdateInput.getPhone());
-        }
-        if (contactUpdateInput.getPosition() != null) {
-            contact.setPosition(contactUpdateInput.getPosition());
-        }
-        if (contactUpdateInput.getImage() != null) {
-            contact.setImage(contactUpdateInput.getImage());
-        }
-
-        contactRepository.save(contact);
-        ContactDto contactDto = new ContactDto(contact);
-        return ServiceResult.success(contactDto);
-    }
-
     @GetMapping(value = "/findById")
     public ServiceResult<ContactDto> findById(
             @RequestBody IdInput idInput
@@ -152,6 +122,36 @@ public class ContactController {
         return ServiceResult.success(contactDtoList);
     }
 
+    @PostMapping(value = "/update")
+    public ServiceResult<ContactDto> update(
+            @RequestBody ContactUpdateInput contactUpdateInput
+    ) {
+        Contact contact = contactRepository.getOne(contactUpdateInput.getId());
+
+        if (contactUpdateInput.getAddress() != null) {
+            contact.setAddress(contactUpdateInput.getAddress());
+        }
+        if (contactUpdateInput.getName() != null) {
+            contact.setName(contactUpdateInput.getName());
+        }
+        if (contactUpdateInput.getMobile() != null) {
+            contact.setMobile(contactUpdateInput.getMobile());
+        }
+        if (contactUpdateInput.getPhone() != null) {
+            contact.setPhone(contactUpdateInput.getPhone());
+        }
+        if (contactUpdateInput.getPosition() != null) {
+            contact.setPosition(contactUpdateInput.getPosition());
+        }
+        if (contactUpdateInput.getImage() != null) {
+            contact.setImage(contactUpdateInput.getImage());
+        }
+
+        contactRepository.save(contact);
+        ContactDto contactDto = new ContactDto(contact);
+        return ServiceResult.success(contactDto);
+    }
+
     @PostMapping(value = "/updateCompany")
     public ServiceResult<ContactDto> updateCompany(
             @RequestBody IdListInput idListInput
@@ -169,5 +169,13 @@ public class ContactController {
 
         ContactDto contactDto = new ContactDto(contact);
         return ServiceResult.success(contactDto);
+    }
+
+    @PostMapping(value = "/delete")
+    public ServiceResult<Integer> delete(
+            @RequestBody IdInput idInput
+    ) {
+        contactRepository.deleteById(idInput.getId());
+        return ServiceResult.success(idInput.getId());
     }
 }

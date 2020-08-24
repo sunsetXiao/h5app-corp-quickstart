@@ -33,7 +33,7 @@ public class Contact {
     private String position;
     private String image;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinTable(
             name = "company_contact",
             joinColumns = @JoinColumn(name = "contact_id"),

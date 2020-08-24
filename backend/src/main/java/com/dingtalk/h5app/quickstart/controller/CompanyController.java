@@ -227,4 +227,12 @@ public class CompanyController {
         CompanyDto companyDto = new CompanyDto(company);
         return ServiceResult.success(companyDto);
     }
+
+    @PostMapping(value = "/delete")
+    public ServiceResult<Integer> delete(
+            @RequestBody IdInput idInput
+    ) {
+        companyRepository.deleteById(idInput.getId());
+        return ServiceResult.success(idInput.getId());
+    }
 }
