@@ -1,3 +1,13 @@
 .body {
   color: gray !important;
 }
+
+.body-title {
+  color: #000000;
+  font-size: large;
+  margin-bottom: 8px;
+}
+
+.body-content {
+  margin-bottom: 7px;
+}

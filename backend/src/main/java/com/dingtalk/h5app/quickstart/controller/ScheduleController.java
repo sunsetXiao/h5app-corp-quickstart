@@ -57,7 +57,7 @@ public class ScheduleController {
         return ServiceResult.success(scheduleDto);
     }
 
-    @GetMapping(value = "/findById")
+    @PostMapping(value = "/findById")
     public ServiceResult<ScheduleDto> findById(
             @RequestBody IdInput idInput
     ) {
@@ -71,7 +71,7 @@ public class ScheduleController {
         return ServiceResult.success(scheduleDto);
     }
 
-    @GetMapping(value = "findAll")
+    @PostMapping(value = "findAll")
     public ServiceResult<List<ScheduleDto>> findAll(
             @RequestBody FilterSortInput filterSortInput
     ) {
@@ -97,7 +97,7 @@ public class ScheduleController {
         return ServiceResult.success(scheduleDtoList);
     }
 
-    @GetMapping(value = "search")
+    @PostMapping(value = "search")
     public ServiceResult<List<ScheduleDto>> search(
             @RequestBody QueryInput queryInput
     ) {

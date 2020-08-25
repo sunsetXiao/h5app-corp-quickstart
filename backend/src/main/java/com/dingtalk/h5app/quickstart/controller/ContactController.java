@@ -55,7 +55,7 @@ public class ContactController {
         return ServiceResult.success(contactDto);
     }
 
-    @GetMapping(value = "/findById")
+    @PostMapping(value = "/findById")
     public ServiceResult<ContactDto> findById(
             @RequestBody IdInput idInput
     ) {
@@ -69,7 +69,7 @@ public class ContactController {
         return ServiceResult.success(contactDto);
     }
 
-    @GetMapping(value = "findAll")
+    @PostMapping(value = "findAll")
     public ServiceResult<List<ContactDto>> findAll(
             @RequestBody FilterSortInput filterSortInput
     ) {
@@ -95,7 +95,7 @@ public class ContactController {
         return ServiceResult.success(contactDtoList);
     }
 
-    @GetMapping(value = "search")
+    @PostMapping(value = "search")
     public ServiceResult<List<ContactDto>> search(
             @RequestBody QueryInput queryInput
     ) {

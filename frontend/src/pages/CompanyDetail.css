@@ -1,0 +1,25 @@
+.header {
+    background-color: white;
+    text-align: left;
+    line-height: 20px;
+    width: 100%;
+
+    margin-bottom: 10px;
+}
+
+.header-title {
+    color: #000000;
+    font-size: large;
+
+    padding: 10px;
+}
+
+.header-content {
+    color: gray;
+    padding-left: 10px;
+    padding-bottom: 5px;
+}
+
+.body {
+    background-color: white;
+}

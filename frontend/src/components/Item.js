@@ -1,30 +1,24 @@
 import React from 'react';
-import { Card, WhiteSpace } from 'antd-mobile';
+import {Card, WhiteSpace} from 'antd-mobile';
 
 import './Item.css'
 
 class Item extends React.Component {
-  render() {
-    return (
-      <div>
-        <WhiteSpace size="xs" />
-        <Card full>
-          <Card.Header
-            title="公司1"
-          />
-          <Card.Body className="body">
-            <div>行业：金融</div>
-            <div>注册地：广东</div>
-            <div>简介：description</div>
-          </Card.Body>
-          {/* <Card.Footer
-            content="footer content"
-            extra={<div>extra footer content</div>}
-          /> */}
-        </Card>
-      </div>
-    );
-  }
+    render() {
+        const company = this.props.company;
+        return (
+            <div>
+                <WhiteSpace size="xs"/>
+                <Card full>
+                    <Card.Body className="body">
+                        <div className="body-title">{company.name}</div>
+                        <div className="body-content">行业：{company.industry_name}</div>
+                        <div className="body-content">简介：{company.description}</div>
+                    </Card.Body>
+                </Card>
+            </div>
+        );
+    }
 }
 
 export default Item;

@@ -79,7 +79,7 @@ public class CompanyController {
         return ServiceResult.success(companyDto);
     }
 
-    @GetMapping(value = "/findById")
+    @PostMapping(value = "/findById")
     public ServiceResult<CompanyDto> findById(
             @RequestBody IdInput idInput
     ) {
@@ -93,7 +93,7 @@ public class CompanyController {
         return ServiceResult.success(companyDto);
     }
 
-    @GetMapping(value = "findAll")
+    @PostMapping(value = "findAll")
     public ServiceResult<List<CompanyDto>> findAll(
             @RequestBody FilterSortInput filterSortInput
     ) {
@@ -119,7 +119,7 @@ public class CompanyController {
         return ServiceResult.success(companyDtoList);
     }
 
-    @GetMapping(value = "search")
+    @PostMapping(value = "search")
     public ServiceResult<List<CompanyDto>> search(
             @RequestBody QueryInput queryInput
     ) {
