@@ -15,7 +15,7 @@ import * as dd from 'dingtalk-jsapi';
 import config from './config.js';
 
 import './App.css';
-import CompanyDetail from "./pages/CompanyDetail";
+import CompanyDetail from "./pages/CompanyDetail/CompanyDetail";
 
 const host = config.host;
 
