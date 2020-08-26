@@ -1,18 +1,18 @@
 import React from 'react';
 import {Card, WhiteSpace} from 'antd-mobile';
 
-import './Item.css'
+import './CompanyItem.css'
 
-class Item extends React.Component {
+class CompanyItem extends React.Component {
     render() {
         const company = this.props.company;
         return (
-            <div>
+            <div style={{width: "100%"}}>
                 <WhiteSpace size="xs"/>
                 <Card full>
                     <Card.Body className="body">
                         <div className="body-title">{company.name}</div>
-                        <div className="body-content">行业：{company.industry_name}</div>
+                        <div className="body-content">地址：{company.industry_name}</div>
                         <div className="body-content">简介：{company.description}</div>
                     </Card.Body>
                 </Card>
@@ -21,4 +21,4 @@ class Item extends React.Component {
     }
 }
 
-export default Item;
+export default CompanyItem;

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import MenuBar from '../components/MenuBar';
-import Item from '../components/Item';
+import CompanyItem from '../components/CompanyItem';
 import './CompanyList.css';
 import config from '../config.js'
 
@@ -42,7 +42,7 @@ class CompanyList extends React.Component {
             <div>
                 <MenuBar/>
                 <div className="item-list">
-                    {this.state.companyList.map(company => { return (<Item key={company.id} company={company}/>)})}
+                    {this.state.companyList.map(company => { return (<CompanyItem key={company.id} company={company}/>)})}
                 </div>
             </div>
         );

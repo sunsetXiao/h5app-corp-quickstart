@@ -4,6 +4,9 @@ import {StickyContainer, Sticky} from 'react-sticky';
 import Detail from "./Detail";
 import config from '../../config.js'
 import './CompanyDetail.css';
+import ContactItem from "../../components/ContactItem";
+import ScheduleItem from "../../components/ScheduleItem";
+import ProgressItem from "../../components/ProgressItem";
 
 const host = config.host
 
@@ -32,13 +35,19 @@ const TabExample = ({company}) => (
                     <Detail company={company}/>
                 </div>
                 <div className="tab">
-                    Content of second tab
+                    {
+                        company.contactList && company.contactList.map((contact) => <ContactItem contact={contact} />)
+                    }
                 </div>
                 <div className="tab">
-                    Content of third tab
+                    {
+                        company.scheduleList && company.scheduleList.map((schedule) => <ScheduleItem schedule={schedule} />)
+                    }
                 </div>
                 <div className="tab">
-                    Content of fourth tab
+                    {
+                        company.progressList && company.progressList.map((progress) => <ProgressItem progress={progress}/>)
+                    }
                 </div>
             </Tabs>
         </StickyContainer>
