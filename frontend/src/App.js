@@ -15,7 +15,8 @@ import * as dd from 'dingtalk-jsapi';
 import config from './config.js';
 
 import './App.css';
-import CompanyDetail from "./pages/CompanyDetail/CompanyDetail";
+import CompanyDetail from "./pages/Company/CompanyDetail";
+import CompanyCreate from "./pages/Company/CompanyCreate";
 
 const host = config.host;
 
@@ -256,7 +257,8 @@ class H5AppQS extends React.Component {
         return (
             <Switch>
                 <Route exact path="/" component={MTabBar}/>
-                <Route path="/company/:id" component={CompanyDetail}/>
+                <Route exact path="/company/:id" component={CompanyDetail}/>
+                <Route exact path="/create/company" component={CompanyCreate}/>
             </Switch>
         )
 

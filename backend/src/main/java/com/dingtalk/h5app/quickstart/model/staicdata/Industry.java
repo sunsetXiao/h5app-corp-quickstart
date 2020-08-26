@@ -20,7 +20,11 @@ public class Industry {
     private String name;
 
     // 暂时设置为以及父目录
-    private String category;
+//    private String category;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "category_id", nullable = false)
+    private IndustryCategory category;
 
     @OneToMany(mappedBy = "industry", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Company> companies;

@@ -54,7 +54,6 @@ class MenuBar extends React.Component {
       }
     });
     this.setState({ label, show: false });
-    console.log(label);
   };
   handleClick = (e) => {
     e.preventDefault(); // Fix event propagation on Android

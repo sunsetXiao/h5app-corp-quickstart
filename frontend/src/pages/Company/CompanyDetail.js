@@ -36,17 +36,17 @@ const TabExample = ({company}) => (
                 </div>
                 <div className="tab">
                     {
-                        company.contactList && company.contactList.map((contact) => <ContactItem contact={contact} />)
+                        company.contactList && company.contactList.map((contact) => <ContactItem key={contact.id} contact={contact} />)
                     }
                 </div>
                 <div className="tab">
                     {
-                        company.scheduleList && company.scheduleList.map((schedule) => <ScheduleItem schedule={schedule} />)
+                        company.scheduleList && company.scheduleList.map((schedule) => <ScheduleItem key={schedule.id} schedule={schedule} />)
                     }
                 </div>
                 <div className="tab">
                     {
-                        company.progressList && company.progressList.map((progress) => <ProgressItem progress={progress}/>)
+                        company.progressList && company.progressList.map((progress) => <ProgressItem key={progress.id} progress={progress}/>)
                     }
                 </div>
             </Tabs>
@@ -80,7 +80,6 @@ class CompanyDetail extends React.Component {
                     company: result.result,
                     // loading: false
                 })
-                console.log(this.state);
             })
     }
 

@@ -2,7 +2,6 @@ package com.dingtalk.h5app.quickstart.controller;
 
 import com.dingtalk.h5app.quickstart.domain.ServiceResult;
 import com.dingtalk.h5app.quickstart.dto.IdInput;
-import com.dingtalk.h5app.quickstart.dto.company.CompanyCreateInput;
 import com.dingtalk.h5app.quickstart.dto.progress.ProgressCreateInput;
 import com.dingtalk.h5app.quickstart.dto.progress.ProgressDto;
 import com.dingtalk.h5app.quickstart.dto.progress.ProgressUpdateInput;

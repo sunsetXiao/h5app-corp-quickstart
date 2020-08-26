@@ -1,9 +1,9 @@
 import React from 'react';
 
-import MenuBar from '../components/MenuBar';
-import CompanyItem from '../components/CompanyItem';
+import MenuBar from '../../components/MenuBar';
+import CompanyItem from '../../components/CompanyItem';
 import './CompanyList.css';
-import config from '../config.js'
+import config from '../../config.js'
 
 const host = config.host
 
@@ -33,7 +33,6 @@ class CompanyList extends React.Component {
 
                     // loading: false
                 })
-                console.log(this.state);
             })
     }
 
