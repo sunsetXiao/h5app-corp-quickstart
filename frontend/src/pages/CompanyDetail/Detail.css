@@ -1,3 +1,7 @@
+.my-list {
+    width: 100%;
+}
+
 .my-list .spe .am-list-extra {
     flex-basis: initial;
 }

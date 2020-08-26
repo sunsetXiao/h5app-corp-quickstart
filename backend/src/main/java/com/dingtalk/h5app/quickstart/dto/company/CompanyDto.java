@@ -41,6 +41,7 @@ public class CompanyDto {
     private String description;
     private String note;
     private String type;
+    private String projectName;
     private String targetRegion;
     private String field;
     private String revenue;
@@ -71,6 +72,7 @@ public class CompanyDto {
         this.description = company.getDescription();
         this.note = company.getNote();
         this.type = company.getType().toString();
+        this.projectName = company.getProjectName();
         this.targetRegion = company.getTargetRegion();
         this.field = company.getField();
         this.revenue = company.getRevenue();

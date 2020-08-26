@@ -2,8 +2,10 @@ import React from 'react';
 import {Tabs, WhiteSpace, Badge} from 'antd-mobile';
 import {StickyContainer, Sticky} from 'react-sticky';
 import Detail from "./Detail";
-
+import config from '../../config.js'
 import './CompanyDetail.css';
+
+const host = config.host
 
 function renderTabBar(props) {
     return (<Sticky>
@@ -18,7 +20,7 @@ const tabs = [
     {title: '进度',},
 ];
 
-const TabExample = () => (
+const TabExample = ({company}) => (
     <div>
         <WhiteSpace/>
         <StickyContainer>
@@ -27,7 +29,7 @@ const TabExample = () => (
                   renderTabBar={renderTabBar}
             >
                 <div className="tab">
-                    <Detail />
+                    <Detail company={company}/>
                 </div>
                 <div className="tab">
                     Content of second tab
@@ -45,16 +47,45 @@ const TabExample = () => (
 );
 
 class CompanyDetail extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            company: {}
+        }
+    }
+    componentDidMount() {
+        const { match: { params } } = this.props;
+
+        fetch(host + '/company/findById', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "id": params.id,
+            })
+        })
+            .then(res => res.json())
+            .then(result => {
+                this.setState({
+                    company: result.result,
+                    // loading: false
+                })
+                console.log(this.state);
+            })
+    }
+
     render() {
+        const company = this.state.company;
         return (
             <div style={{width: '100%', top: 0}}>
                 <div className="header">
-                    <div className="header-title"> 企业1</div>
-                    <div className="header-content"> 行业：行业1</div>
-                    <div className="header-content"> 描述：balabala</div>
+                    <div className="header-title"> {company.name}</div>
+                    <div className="header-content"> 行业：{company.industry_name}</div>
+                    <div className="header-content"> 描述：{company.description}</div>
                 </div>
                 <div className="body">
-                    <TabExample/>
+                    <TabExample company={company}/>
                 </div>
             </div>
         );

@@ -104,12 +104,12 @@ class H5AppQS extends React.Component {
     }
 
     componentDidMount() {
-        dd.config({
-            ...this.props.config,
-            jsApiList: ['biz.util.scanCard'],
-        });
 
         if (dd.env.platform !== 'notInDingTalk') {
+            dd.config({
+                ...this.props.config,
+                jsApiList: ['biz.util.scanCard'],
+            });
             dd.ui.webViewBounce.disable();
 
             // 设置导航栏标题
@@ -256,7 +256,7 @@ class H5AppQS extends React.Component {
         return (
             <Switch>
                 <Route exact path="/" component={MTabBar}/>
-                <Route exact path="/company" component={CompanyDetail}/>
+                <Route path="/company/:id" component={CompanyDetail}/>
             </Switch>
         )
 
