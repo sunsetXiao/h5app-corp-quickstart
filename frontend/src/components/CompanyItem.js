@@ -8,8 +8,8 @@ class CompanyItem extends React.Component {
     render() {
         const company = this.props.company;
         return (
-            <Link to={`/company/${this.props.company.id}`}>
-                <div style={{width: "100%"}}>
+            <Link style={{width: "100%"}} to={`/company/${this.props.company.id}`}>
+                <div>
                     <WhiteSpace size="xs"/>
                     <Card full>
                         <Card.Body className="body">

@@ -2,7 +2,7 @@ import React from 'react';
 import { TabBar } from 'antd-mobile';
 
 import MainTab from './MainTab';
-import ContactList from './ContactList';
+import ContactList from './Contact/ContactList';
 import CompanyList from './Company/CompanyList';
 
 class MTabBar extends React.Component {

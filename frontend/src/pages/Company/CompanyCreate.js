@@ -247,8 +247,8 @@ class BasicInput extends React.Component {
                 }
 
                 <Item>
-                    <Button type="primary" size="small" inline onClick={this.onSubmit}>Submit</Button>
-                    <Button size="small" inline style={{marginLeft: '2.5px'}} onClick={this.onReset}>Reset</Button>
+                    <Button type="primary" size="small" inline onClick={this.onSubmit}>提交</Button>
+                    <Button size="small" inline style={{marginLeft: '2.5px'}} onClick={this.onReset}>重置</Button>
                 </Item>
             </List>
         </form>);

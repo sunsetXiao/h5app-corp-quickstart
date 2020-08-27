@@ -3,10 +3,8 @@ import {Tabs, WhiteSpace, Badge} from 'antd-mobile';
 import {StickyContainer, Sticky} from 'react-sticky';
 import Detail from "./Detail";
 import config from '../../config.js'
-import './CompanyDetail.css';
+import './ContactDetail.css';
 import ContactItem from "../../components/ContactItem";
-import ScheduleItem from "../../components/ScheduleItem";
-import ProgressItem from "../../components/ProgressItem";
 
 const host = config.host
 
@@ -18,12 +16,10 @@ function renderTabBar(props) {
 
 const tabs = [
     {title: '基本信息',},
-    {title: '联系人',},
-    {title: '提醒',},
-    {title: '进度',},
+    {title: '公司',},
 ];
 
-const TabExample = ({company}) => (
+const TabExample = ({contact}) => (
     <div>
         <WhiteSpace/>
         <StickyContainer>
@@ -32,21 +28,11 @@ const TabExample = ({company}) => (
                   renderTabBar={renderTabBar}
             >
                 <div className="tab">
-                    <Detail company={company}/>
+                    <Detail contact={contact}/>
                 </div>
                 <div className="tab">
                     {
-                        company.contactList && company.contactList.map((contact) => <ContactItem key={contact.id} contact={contact} />)
-                    }
-                </div>
-                <div className="tab">
-                    {
-                        company.scheduleList && company.scheduleList.map((schedule) => <ScheduleItem key={schedule.id} schedule={schedule} />)
-                    }
-                </div>
-                <div className="tab">
-                    {
-                        company.progressList && company.progressList.map((progress) => <ProgressItem key={progress.id} progress={progress}/>)
+                        contact.companyList && contact.companyList.map((company) => <ContactItem key={company.id} contact={company} />)
                     }
                 </div>
             </Tabs>
@@ -55,17 +41,17 @@ const TabExample = ({company}) => (
     </div>
 );
 
-class CompanyDetail extends React.Component {
+class ContactDetail extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            company: {}
+            contact: {}
         }
     }
     componentDidMount() {
         const { match: { params } } = this.props;
 
-        fetch(host + '/company/findById', {
+        fetch(host + '/contact/findById', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -77,27 +63,27 @@ class CompanyDetail extends React.Component {
             .then(res => res.json())
             .then(result => {
                 this.setState({
-                    company: result.result || {},
+                    contact: result.result || {},
                     // loading: false
                 })
             })
     }
 
     render() {
-        const company = this.state.company;
+        const contact = this.state.contact;
         return (
             <div style={{width: '100%', top: 0}}>
                 <div className="header">
-                    <div className="header-title"> {company.name}</div>
-                    <div className="header-content"> 行业：{company.industry_name}</div>
-                    <div className="header-content"> 描述：{company.description}</div>
+                    <div className="header-title"> {contact.name}</div>
+                    <div className="header-content"> 地址：{contact.address}</div>
+                    <div className="header-content"> 手机：{contact.mobile}</div>
                 </div>
                 <div className="body">
-                    <TabExample company={company}/>
+                    <TabExample contact={contact}/>
                 </div>
             </div>
         );
     }
 }
 
-export default CompanyDetail;
+export default ContactDetail;

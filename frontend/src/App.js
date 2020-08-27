@@ -17,6 +17,9 @@ import config from './config.js';
 import './App.css';
 import CompanyDetail from "./pages/Company/CompanyDetail";
 import CompanyCreate from "./pages/Company/CompanyCreate";
+import ContactDetail from "./pages/Contact/ContactDetail";
+import ContactCreate from "./pages/Contact/ContactCreate";
+import ContactSelect from "./components/ContactSelect";
 
 const host = config.host;
 
@@ -259,6 +262,9 @@ class H5AppQS extends React.Component {
                 <Route exact path="/" component={MTabBar}/>
                 <Route exact path="/company/:id" component={CompanyDetail}/>
                 <Route exact path="/create/company" component={CompanyCreate}/>
+                <Route exact path="/contact/:id" component={ContactDetail}/>
+                <Route exact path="/create/contact" component={ContactCreate}/>
+                <Route exact path="/select/contact" component={ContactSelect}/>
             </Switch>
         )
 
