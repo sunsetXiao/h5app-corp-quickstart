@@ -29,9 +29,7 @@ class ContactList extends React.Component {
         .then(result => {
           this.setState({
             contactList: result.result,
-
-
-            // loading: false
+              // loading: false
           })
         })
   }

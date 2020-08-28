@@ -8,14 +8,14 @@ class CompanyItem extends React.Component {
     render() {
         const company = this.props.company;
         return (
-            <Link style={{width: "100%"}} to={`/company/${this.props.company.id}`}>
+            <Link style={{width: "100%"}} to={this.props.to || `/company/${this.props.company.id}`} replace={this.props.replace}>
                 <div>
                     <WhiteSpace size="xs"/>
                     <Card full>
                         <Card.Body className="body">
                             <div className="body-title">{company.name}</div>
-                            <div className="body-content">地址：{company.industry_name}</div>
-                            <div className="body-content">简介：{company.description}</div>
+                            <div className="body-content">行业：{company.industry_name}</div>
+                            <div className="body-content">描述：{company.description}</div>
                         </Card.Body>
                     </Card>
                 </div>

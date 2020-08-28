@@ -34,6 +34,8 @@ class BasicInput extends React.Component {
                     area: result.result,
                 })
             })
+
+        console.log("companyCreate", this.props);
     }
 
     state = {
@@ -100,7 +102,11 @@ class BasicInput extends React.Component {
     //         callback(new Error('At least four characters for account'));
     //     }
     // }
-
+    onTest = () => {
+        // alert(JSON.stringify(localStorage));
+        this.props.history.push("/select/contact", {... this.props.form.getFieldsValue(), pathname: '/create/company'})
+        // console.log(this.props.children)
+    }
     render() {
         const {getFieldProps, getFieldError} = this.props.form;
 
@@ -119,6 +125,7 @@ class BasicInput extends React.Component {
                         rules: [
                             {required: true, message: '请输入公司名'}
                         ],
+                        initialValue: "tsts"
                     })}
                     clear
                     error={!!getFieldError('name')}
@@ -132,6 +139,7 @@ class BasicInput extends React.Component {
                             rules: [
                                 {required: true, message: '请选择行业'}
                             ],
+                            initialValue: [1, 1]
                         })}
                 >
                     <List.Item arrow="horizontal">行业</List.Item>
@@ -249,6 +257,7 @@ class BasicInput extends React.Component {
                 <Item>
                     <Button type="primary" size="small" inline onClick={this.onSubmit}>提交</Button>
                     <Button size="small" inline style={{marginLeft: '2.5px'}} onClick={this.onReset}>重置</Button>
+                    <Button type="primary" size="small" inline onClick={this.onTest}>提交</Button>
                 </Item>
             </List>
         </form>);

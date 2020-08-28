@@ -1,5 +1,4 @@
 import React from 'react';
-
 import SearchBar from './SearchBar';
 import ContactItem from './ContactItem';
 import './ContactSelect.css';
@@ -29,19 +28,22 @@ class ContactSelect extends React.Component {
             .then(result => {
                 this.setState({
                     contactList: result.result,
-
-
                     // loading: false
                 })
             })
     }
 
     render() {
+        console.log("ContactSelect", this.props)
+        const to = {
+            pathname: this.props.location.state.pathname,
+            state: this.props.location.state,
+        };
         return (
             <div>
                 <SearchBar />
                 <div className="item-list">
-                    {this.state.contactList.map(contact => { return (<ContactItem key={contact.id} contact={contact}/>)})}
+                    {this.state.contactList.map(contact => { return (<ContactItem key={contact.id} contact={contact} to={{... to, state: { ... to.state, contact }}} replace={true}/>)})}
                 </div>
             </div>
         );

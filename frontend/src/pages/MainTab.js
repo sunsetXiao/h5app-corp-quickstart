@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, Flex, WhiteSpace } from 'antd-mobile';
 
 import './MainTab.css';
+import {Link} from "react-router-dom";
 
 class MainTab extends React.Component {
   render() {
@@ -28,7 +29,7 @@ class MainTab extends React.Component {
           <Card.Header
             title="提醒"
             thumb="https://zos.alipayobjects.com/rmsportal/psUFoAMjkCcjqtUCNPxB.svg"
-            extra={<span>更多</span>}
+            extra={<Link to="/create/company"><span>更多</span></Link>}
           />
           <Card.Body>
             <div>今日提醒</div>
