@@ -85,7 +85,12 @@ class BasicInput extends React.Component {
                 })
                     .then(res => res.json())
                     .then(result => {
-
+                        // const to = {
+                        //     pathname: this.props.location.state.pathname,
+                        //     state: this.props.location.state,
+                        // };
+                        const state = this.props.location.state;
+                        this.props.history.replace(state.pathname, state)
                     })
             } else {
                 // alert('Validation failed');
@@ -102,11 +107,11 @@ class BasicInput extends React.Component {
     //         callback(new Error('At least four characters for account'));
     //     }
     // }
-    onTest = () => {
-        // alert(JSON.stringify(localStorage));
-        this.props.history.push("/select/contact", {... this.props.form.getFieldsValue(), pathname: '/create/company'})
-        // console.log(this.props.children)
-    }
+    // onTest = () => {
+    //     // alert(JSON.stringify(localStorage));
+    //     this.props.history.push("/select/contact", {... this.props.form.getFieldsValue(), pathname: '/create/company'})
+    //     // console.log(this.props.children)
+    // }
     render() {
         const {getFieldProps, getFieldError} = this.props.form;
 
@@ -257,7 +262,7 @@ class BasicInput extends React.Component {
                 <Item>
                     <Button type="primary" size="small" inline onClick={this.onSubmit}>提交</Button>
                     <Button size="small" inline style={{marginLeft: '2.5px'}} onClick={this.onReset}>重置</Button>
-                    <Button type="primary" size="small" inline onClick={this.onTest}>提交</Button>
+                    {/*<Button type="primary" size="small" inline onClick={this.onTest}>提交</Button>*/}
                 </Item>
             </List>
         </form>);

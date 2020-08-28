@@ -5,6 +5,8 @@ import MainTab from './MainTab';
 import ContactList from './Contact/ContactList';
 import CompanyList from './Company/CompanyList';
 
+import './Tabbar.css'
+
 class MTabBar extends React.Component {
   constructor(props) {
     super(props);
@@ -16,6 +18,7 @@ class MTabBar extends React.Component {
   }
 
   renderContent(pageText) {
+      console.log("tabbar", this.props)
     return (
       <div style={{ height: '100%', textAlign: 'center' }}>
         <div style={{ paddingTop: 60 }}>
@@ -54,7 +57,7 @@ class MTabBar extends React.Component {
 
   render() {
     return (
-      <div style={{ position: 'fixed', height: '100%', width: '100%', top: 0 }}>
+      <div className="full" >
         <TabBar
           unselectedTintColor="#949494"
           tintColor="#33A3F4"

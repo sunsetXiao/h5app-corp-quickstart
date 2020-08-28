@@ -29,7 +29,7 @@ class MainTab extends React.Component {
           <Card.Header
             title="提醒"
             thumb="https://zos.alipayobjects.com/rmsportal/psUFoAMjkCcjqtUCNPxB.svg"
-            extra={<Link to="/create/company"><span>更多</span></Link>}
+            extra={<Link to={{ pathname: "/create/company", state: { index: 0, pathname: "/" } }}><span>更多</span></Link>}
           />
           <Card.Body>
             <div>今日提醒</div>
