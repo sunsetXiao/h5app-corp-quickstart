@@ -27,12 +27,12 @@ class MainTab extends React.Component {
 
         <Card full>
           <Card.Header
-            title="提醒"
+            title="公司"
             thumb="https://zos.alipayobjects.com/rmsportal/psUFoAMjkCcjqtUCNPxB.svg"
             extra={<Link to={{ pathname: "/create/company", state: { index: 0, pathname: "/" } }}><span>更多</span></Link>}
           />
           <Card.Body>
-            <div>今日提醒</div>
+            <div>公司</div>
           </Card.Body>
           {/* <Card.Footer
             content="footer content"
@@ -40,7 +40,31 @@ class MainTab extends React.Component {
           /> */}
         </Card>
 
+          <WhiteSpace size="lg" />
+
+          <Card full>
+              <Card.Header
+                  title="联系人"
+                  thumb="https://zos.alipayobjects.com/rmsportal/psUFoAMjkCcjqtUCNPxB.svg"
+                  extra={<Link to={{ pathname: "/create/contact", state: { index: 0, pathname: "/" } }}><span>更多</span></Link>}
+              />
+              <Card.Body>
+                  <div>联系人</div>
+              </Card.Body>
+          </Card>
+
         <WhiteSpace size="lg" />
+
+          <Card full>
+              <Card.Header
+                  title="提醒"
+                  thumb="https://zos.alipayobjects.com/rmsportal/psUFoAMjkCcjqtUCNPxB.svg"
+                  extra={<span>更多</span>}
+              />
+              <Card.Body>
+                  <div>今日提醒</div>
+              </Card.Body>
+          </Card>
 
         <Card full>
           <Card.Header
@@ -51,10 +75,6 @@ class MainTab extends React.Component {
           <Card.Body>
             <div>今日资讯</div>
           </Card.Body>
-          {/* <Card.Footer
-            content="footer content"
-            extra={<div>extra footer content</div>}
-          /> */}
         </Card>
 
       </div>

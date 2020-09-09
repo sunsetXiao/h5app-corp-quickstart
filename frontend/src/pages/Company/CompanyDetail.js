@@ -1,6 +1,8 @@
 import React from 'react';
 import {Tabs, WhiteSpace, Badge, Button} from 'antd-mobile';
 import {StickyContainer, Sticky} from 'react-sticky';
+import * as dd from 'dingtalk-jsapi';
+
 import Detail from "./Detail";
 import config from '../../config.js'
 import './CompanyDetail.css';
@@ -28,7 +30,8 @@ class CompanyDetail extends React.Component {
         super(props)
         this.state = {
             company: {},
-            page: 0
+            page: 0,
+            config: {}
         }
     }
 
@@ -84,10 +87,46 @@ class CompanyDetail extends React.Component {
 
     onButtonClick() {
         // console.log("sgsgsg")
-        const {match: {params}} = this.props;
-        this.props.history.push("/select/contact", {
-            pathname: `/company/${params.id}`
-        })
+        if (dd.env.platform !== 'notInDingTalk') {
+            dd.biz.map.locate({
+                // latitude: 39.903578, // 纬度，非必须
+                // longitude: 116.473565, // 经度，非必须
+                scope: 500, // 限制搜索POI的范围；设备位置为中心，scope为搜索半径
+                onSuccess: function (result) {
+                    /* result 结构 */
+                    // {
+                    //     province: 'xxx', // POI所在省会，可能为空
+                    //         provinceCode: 'xxx', // POI所在省会编码，可能为空
+                    //     city: 'xxx', // POI所在城市，可能为空
+                    //     cityCode: 'xxx', // POI所在城市编码，可能为空
+                    //     adName: 'xxx', // POI所在区名称，可能为空
+                    //     adCode: 'xxx', // POI所在区编码，可能为空
+                    //     distance: 'xxx', // POI与设备位置的距离
+                    //     postCode: 'xxx', // POI的邮编，可能为空
+                    //     snippet: 'xxx', // POI的街道地址，可能为空
+                    //     title: 'xxx', // POI的名称
+                    //     latitude: 39.903578, // POI的纬度
+                    //     longitude: 116.473565, // POI的经度
+                    // }
+                    alert("result" + JSON.stringify(result))
+                },
+                onFail: function (err) {
+                    alert(JSON.stringify(err))
+                }
+            });
+
+            // dd.biz.map.view({
+            //     latitude: 39.903578, // 纬度
+            //     longitude: 116.473565, // 经度
+            //     title: "北京国家广告产业园" // 地址/POI名称
+            // });
+        }
+
+
+        // const {match: {params}} = this.props;
+        // this.props.history.push("/select/contact", {
+        //     pathname: `/company/${params.id}`
+        // })
     }
 
     onContactDelete(id) {

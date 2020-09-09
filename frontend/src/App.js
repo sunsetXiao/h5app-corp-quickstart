@@ -109,27 +109,6 @@ class H5AppQS extends React.Component {
 
     componentDidMount() {
 
-        if (dd.env.platform !== 'notInDingTalk') {
-            dd.config({
-                ...this.props.config,
-                jsApiList: ['biz.util.scanCard'],
-            });
-            dd.ui.webViewBounce.disable();
-
-            // 设置导航栏标题
-            dd.biz.navigation
-                .setTitle({
-                    title: '招商宝', //控制标题文本，空字符串表示显示默认文本
-                    onSuccess: function (result) {
-                    },
-                    onFail: function (err) {
-                    },
-                })
-                .catch((err) => {
-                    console.log(err + '');
-                });
-        }
-
         const that = this;
         fetch(host + '/config', {
             method: 'POST',
@@ -147,6 +126,27 @@ class H5AppQS extends React.Component {
                         ...result.result,
                     },
                 });
+
+                if (dd.env.platform !== 'notInDingTalk') {
+                    dd.config({
+                        ...this.state.config,
+                        jsApiList: ['biz.map.locate', 'biz.map.view', 'biz.util.scanCard'],
+                    });
+                    dd.ui.webViewBounce.disable();
+
+                    // 设置导航栏标题
+                    dd.biz.navigation
+                        .setTitle({
+                            title: '招商宝', //控制标题文本，空字符串表示显示默认文本
+                            onSuccess: function (result) {
+                            },
+                            onFail: function (err) {
+                            },
+                        })
+                        .catch((err) => {
+                            console.log(err + '');
+                        });
+                }
 
                 dd.runtime.permission
                     .requestAuthCode({
@@ -227,7 +227,7 @@ class H5AppQS extends React.Component {
     //                 <Header><H5AppQSHeader user={this.state.user} /></Header>
     //                 <Content>
     //                     <PlatformDetail env={this.state.env} />
-
+    //
     //                     <Menu mode="horizontal" onClick={this.handleClick} selectedKeys={[this.state.current]}>
     //                         <Menu.Item key="home">
     //                             <Link to="/"><Icon type="home" /> 首页</Link>

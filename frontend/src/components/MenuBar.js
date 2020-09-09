@@ -3,30 +3,48 @@ import { Menu, ActivityIndicator, NavBar } from 'antd-mobile';
 
 import './MenuBar.css';
 
+// const data = [
+//   {
+//     value: '1',
+//     label: '全部',
+//     isLeaf: true,
+//   },
+//   {
+//     value: '2',
+//     label: '行业',
+//     children: [
+//       {
+//         label: '互联网',
+//         value: '1',
+//       },
+//       {
+//         label: '金融',
+//         value: '2',
+//       },
+//       {
+//         label: '教育',
+//         value: '3',
+//         disabled: true,
+//       },
+//     ],
+//   },
+// ];
+
 const data = [
   {
-    value: '1',
+    value: 'all',
     label: '全部',
     isLeaf: true,
   },
   {
-    value: '2',
-    label: '行业',
-    children: [
-      {
-        label: '互联网',
-        value: '1',
-      },
-      {
-        label: '金融',
-        value: '2',
-      },
-      {
-        label: '教育',
-        value: '3',
-        disabled: true,
-      },
-    ],
+    value: 'technology',
+    label: '科技类',
+    isLeaf: true,
+  },
+  {
+    value: 'industry',
+    label: '产业类',
+    isLeaf: true,
   },
 ];
 
@@ -53,6 +71,7 @@ class MenuBar extends React.Component {
         }
       }
     });
+    this.props.onClick(value)
     this.setState({ label, show: false });
   };
   handleClick = (e) => {

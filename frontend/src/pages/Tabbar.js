@@ -11,7 +11,7 @@ class MTabBar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedTab: 'company',
+      selectedTab: 'main',
       hidden: false,
       fullScreen: false,
     };

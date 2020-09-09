@@ -4,6 +4,7 @@ const config = {
     // 例如 host: 'http://192.168.1.2:8080',
     // 使用backend中构建结果访问时请将host指定为空
     host: 'http://192.168.9.98:8080',
+    // host: 'http://192.168.188.22:8080',
 }
 
 export default config;
