@@ -5,12 +5,15 @@ import com.dingtalk.h5app.quickstart.dto.*;
 import com.dingtalk.h5app.quickstart.dto.company.CompanyCreateInput;
 import com.dingtalk.h5app.quickstart.dto.company.CompanyDto;
 import com.dingtalk.h5app.quickstart.dto.company.CompanyUpdateInput;
+import com.dingtalk.h5app.quickstart.dto.poi.POICreateInput;
 import com.dingtalk.h5app.quickstart.model.Company;
 import com.dingtalk.h5app.quickstart.model.Contact;
+import com.dingtalk.h5app.quickstart.model.POI;
 import com.dingtalk.h5app.quickstart.model.staicdata.City;
 import com.dingtalk.h5app.quickstart.model.staicdata.Industry;
 import com.dingtalk.h5app.quickstart.repository.CompanyRepository;
 import com.dingtalk.h5app.quickstart.repository.ContactRepository;
+import com.dingtalk.h5app.quickstart.repository.POIRepository;
 import com.dingtalk.h5app.quickstart.repository.staticdata.CityRepository;
 import com.dingtalk.h5app.quickstart.repository.staticdata.IndustryRepository;
 import com.dingtalk.h5app.quickstart.repository.staticdata.ProvinceRepository;
@@ -45,6 +48,9 @@ public class CompanyController {
     @Autowired
     private ContactRepository contactRepository;
 
+    @Autowired
+    private POIRepository poiRepository;
+
     @PostMapping(value = "/create")
     public ServiceResult<CompanyDto> create(
             @RequestBody CompanyCreateInput companyCreateInput
@@ -55,10 +61,10 @@ public class CompanyController {
         if (industry.isPresent()) {
             company.setIndustry(industry.get());
         }
-        Optional<City> city = cityRepository.findById(companyCreateInput.getCity_id());
-        if (city.isPresent()) {
-            company.setCity(city.get());
-        }
+//        Optional<City> city = cityRepository.findById(companyCreateInput.getCity_id());
+//        if (city.isPresent()) {
+//            company.setCity(city.get());
+//        }
         company.setDescription(companyCreateInput.getDescription());
         company.setNote(companyCreateInput.getNote());
         company.setType(companyCreateInput.getType());
@@ -71,6 +77,12 @@ public class CompanyController {
         company.setCarrier(companyCreateInput.getCarrier());
         company.setOutput_tax(companyCreateInput.getOutput_tax());
         company.setInvestment(companyCreateInput.getInvestment());
+
+        if (companyCreateInput.getPoi() != null) {
+            POICreateInput poiCreateInput = companyCreateInput.getPoi();
+            POI poi = poiCreateInput.toPOI();
+            company.setPoi(poi);
+        }
 
         companyRepository.save(company);
 
@@ -203,6 +215,23 @@ public class CompanyController {
         if (companyUpdateInput.getInvestment() != null) {
             company.setInvestment(companyUpdateInput.getInvestment());
         }
+
+        if (companyUpdateInput.getPoi() != null) {
+            POI poiOne = company.getPoi();
+            if (poiOne != null) {
+                System.out.println(poiOne.getId());
+                Integer poiId = poiOne.getId();
+                poiRepository.deleteById(poiId);
+                poiRepository.deleteById(7);
+            }
+
+            POICreateInput poiCreateInput = companyUpdateInput.getPoi();
+            POI poi = poiCreateInput.toPOI();
+            company.setPoi(poi);
+
+            company.setPoi(poi);
+        }
+
         companyRepository.save(company);
 
         CompanyDto companyDto = new CompanyDto(company);

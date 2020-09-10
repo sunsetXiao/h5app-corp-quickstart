@@ -1,6 +1,7 @@
 import React from "react";
 import {List} from 'antd-mobile';
 import "./Detail.css"
+import * as dd from "dingtalk-jsapi/index";
 
 const Item = List.Item;
 const Brief = Item.Brief;
@@ -13,6 +14,12 @@ class Detail extends React.Component {
         }
     }
 
+    onPoiClick = (poi) => {
+        if (dd.env.platform !== 'notInDingTalk') {
+            dd.biz.map.view(poi);
+        }
+    }
+
     render() {
         const {company} = this.props;
 
@@ -20,7 +27,7 @@ class Detail extends React.Component {
             <List renderHeader={() => '基本信息'} className="my-list">
                 <Item><Brief>名称</Brief> {company.name || '-'} </Item>
                 <Item><Brief>行业</Brief> {company.industry_name || '-'} </Item>
-                <Item><Brief>城市</Brief> {company.city_name || '-'} </Item>
+                <Item onClick={() => this.onPoiClick(company.poi)}><Brief>地址(点击查看定位)</Brief> {company.poi && company.poi.city + company.poi.title || '-'} </Item>
                 <Item><Brief>描述</Brief> {company.description || '-'} </Item>
                 <Item><Brief>备注</Brief> {company.note || '-'} </Item>
                 <Item><Brief>类型</Brief> {company.type === 'technology' ? '科技类' : '产业类'} </Item>

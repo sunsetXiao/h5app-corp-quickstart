@@ -25,7 +25,7 @@ public class Company {
     private Industry industry;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "city_id", nullable = false)
+    @JoinColumn(name = "city_id")
     private City city;
 
     // 公司简介
@@ -66,4 +66,7 @@ public class Company {
 
     @OneToMany(mappedBy = "company", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Schedule> scheduleList;
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private POI poi;
 }

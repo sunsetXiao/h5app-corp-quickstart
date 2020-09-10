@@ -1,5 +1,6 @@
 package com.dingtalk.h5app.quickstart.dto.company;
 
+import com.dingtalk.h5app.quickstart.dto.poi.POICreateInput;
 import com.dingtalk.h5app.quickstart.model.Company;
 import com.dingtalk.h5app.quickstart.model.staicdata.CompanyType;
 import lombok.Getter;
@@ -30,4 +31,5 @@ public class CompanyUpdateInput {
     private String output_tax;
     private String investment;
 
+    private POICreateInput poi;
 }

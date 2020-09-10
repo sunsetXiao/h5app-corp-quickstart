@@ -2,6 +2,7 @@ import React from 'react';
 import {List, InputItem, Switch, Stepper, Range, Button, Picker} from 'antd-mobile';
 import {createForm} from 'rc-form';
 import config from '../../config.js'
+import * as dd from "dingtalk-jsapi/index";
 
 const host = config.host
 const Item = List.Item;
@@ -42,7 +43,8 @@ class BasicInput extends React.Component {
         value: 1,
         industry: [],
         area: [],
-        type: [{value: "technology", label: "科技类"}, { value: "industry", label: "产业类" }]
+        type: [{value: "technology", label: "科技类"}, { value: "industry", label: "产业类" }],
+        poi: {}
     }
     onSubmit = () => {
         this.props.form.validateFields({force: true}, (error) => {
@@ -59,7 +61,7 @@ class BasicInput extends React.Component {
                 // targetRegion: undefined
                 // team: undefined
                 // type: ["technology"]
-                const {name, industry, area, description, note, type, projectName, targetRegion, field, revenue, financing, team, carrier, output_tax, investment} = this.props.form.getFieldsValue();
+                const {name, industry, description, note, type, projectName, targetRegion, field, revenue, financing, team, carrier, output_tax, investment} = this.props.form.getFieldsValue();
                 fetch(host + '/company/create', {
                     method: 'POST',
                     headers: {
@@ -68,7 +70,7 @@ class BasicInput extends React.Component {
                     body: JSON.stringify({
                         name,
                         industry_id: industry[1],
-                        city_id: area[1],
+                        // city_id: area[1],
                         description,
                         note,
                         type: type[0],
@@ -80,7 +82,8 @@ class BasicInput extends React.Component {
                         team,
                         carrier,
                         output_tax,
-                        investment
+                        investment,
+                        poi: this.state.poi
                     })
                 })
                     .then(res => res.json())
@@ -99,6 +102,47 @@ class BasicInput extends React.Component {
     }
     onReset = () => {
         this.props.form.resetFields();
+    }
+
+    onPOIClick = async () => {
+        if (dd.env.platform !== 'notInDingTalk') {
+            const result = await  dd.biz.map.locate({
+                // latitude: 39.903578, // 纬度，非必须
+                // longitude: 116.473565, // 经度，非必须
+                scope: 500, // 限制搜索POI的范围；设备位置为中心，scope为搜索半径
+                // onSuccess: function (result) {
+                //     /* result 结构 */
+                //     // {
+                //     //     province: 'xxx', // POI所在省会，可能为空
+                //     //         provinceCode: 'xxx', // POI所在省会编码，可能为空
+                //     //     city: 'xxx', // POI所在城市，可能为空
+                //     //     cityCode: 'xxx', // POI所在城市编码，可能为空
+                //     //     adName: 'xxx', // POI所在区名称，可能为空
+                //     //     adCode: 'xxx', // POI所在区编码，可能为空
+                //     //     distance: 'xxx', // POI与设备位置的距离
+                //     //     postCode: 'xxx', // POI的邮编，可能为空
+                //     //     snippet: 'xxx', // POI的街道地址，可能为空
+                //     //     title: 'xxx', // POI的名称
+                //     //     latitude: 39.903578, // POI的纬度
+                //     //     longitude: 116.473565, // POI的经度
+                //     // }
+                //     // alert("result" + JSON.stringify(result))
+                // },
+                // onFail: function (err) {
+                //     alert(JSON.stringify(err))
+                // }
+            });
+
+            this.props.form.setFieldsValue({
+                poi: result && result.title
+            })
+            this.setState({
+                poi: result
+            })
+        }
+
+
+        console.log(this.props.form)
     }
     // validateAccount = (rule, value, callback) => {
     //     if (value && value.length > 4) {
@@ -121,7 +165,6 @@ class BasicInput extends React.Component {
                 renderFooter={() =>
                     getFieldError('name') && getFieldError('name').join(',')  ||
                     getFieldError('industry') && getFieldError('industry').join(',') ||
-                    getFieldError('area') && getFieldError('area').join(',') ||
                     getFieldError('type') && getFieldError('type').join(',')
                 }
             >
@@ -150,17 +193,13 @@ class BasicInput extends React.Component {
                     <List.Item arrow="horizontal">行业</List.Item>
                 </Picker>
 
-                <Picker
-                    data={this.state.area}
-                    title="地址"
-                    {...getFieldProps('area',  {
-                        rules: [
-                            {required: true, message: '请选择地址'}
-                        ],
-                    })}
-                >
-                    <List.Item arrow="horizontal">地址</List.Item>
-                </Picker>
+                <InputItem
+                    {...getFieldProps('poi')}
+                    clear
+                    editable={false}
+                    placeholder="请选择地址"
+                    onClick={this.onPOIClick}
+                >地址</InputItem>
 
                 <InputItem
                     {...getFieldProps('description')}

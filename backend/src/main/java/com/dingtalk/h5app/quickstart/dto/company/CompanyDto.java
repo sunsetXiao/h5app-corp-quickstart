@@ -1,16 +1,15 @@
 package com.dingtalk.h5app.quickstart.dto.company;
 
 import com.dingtalk.h5app.quickstart.dto.contact.ContactDto;
+import com.dingtalk.h5app.quickstart.dto.poi.POIDto;
 import com.dingtalk.h5app.quickstart.dto.progress.ProgressDto;
 import com.dingtalk.h5app.quickstart.dto.schedule.ScheduleDto;
-import com.dingtalk.h5app.quickstart.model.Company;
-import com.dingtalk.h5app.quickstart.model.Contact;
-import com.dingtalk.h5app.quickstart.model.Progress;
-import com.dingtalk.h5app.quickstart.model.Schedule;
+import com.dingtalk.h5app.quickstart.model.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,8 +35,8 @@ public class CompanyDto {
     private Integer id;
     private String name;
     private String industry_name;
-    private String city_name;
-    private String province_name;
+//    private String city_name;
+//    private String province_name;
     private String description;
     private String note;
     private String type;
@@ -55,6 +54,8 @@ public class CompanyDto {
     private List<ContactDto> contactList;
     private List<ScheduleDto> scheduleList;
 
+    private POIDto poi;
+
 //    private Industry industry;
     public CompanyDto() {
 
@@ -67,8 +68,8 @@ public class CompanyDto {
         this.id = company.getId();
         this.name = company.getName();
         this.industry_name = company.getIndustry().getName();
-        this.city_name = company.getCity().getName();
-        this.province_name = company.getCity().getProvince().getName();
+//        this.city_name = company.getPoi()
+//        this.province_name = company.getCity().getProvince().getName();
         this.description = company.getDescription();
         this.note = company.getNote();
         this.type = company.getType().toString();
@@ -99,6 +100,10 @@ public class CompanyDto {
             for (Schedule schedule: company.getScheduleList()) {
                 this.scheduleList.add(new ScheduleDto(schedule, "company"));
             }
+        }
+
+        if (company.getPoi() != null && ignore != "poi") {
+            this.poi = new POIDto(company.getPoi());
         }
     }
 }
