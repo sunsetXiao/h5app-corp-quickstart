@@ -15,7 +15,7 @@ class CompanyItem extends React.Component {
                         <Card.Body className="body">
                             <div className="body-title">{company.name}</div>
                             <div className="body-content">行业：{company.industry_name}</div>
-                            <div className="body-content">描述：{company.description}</div>
+                            <div className="body-content">公司信息描述：{company.description}</div>
                         </Card.Body>
                     </Card>
                 </div>

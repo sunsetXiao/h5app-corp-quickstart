@@ -173,7 +173,6 @@ class BasicInput extends React.Component {
                         rules: [
                             {required: true, message: '请输入公司名'}
                         ],
-                        initialValue: "tsts"
                     })}
                     clear
                     error={!!getFieldError('name')}
@@ -187,7 +186,7 @@ class BasicInput extends React.Component {
                             rules: [
                                 {required: true, message: '请选择行业'}
                             ],
-                            initialValue: [1, 1]
+                            // initialValue: [1, 1]
                         })}
                 >
                     <List.Item arrow="horizontal">行业</List.Item>
@@ -197,19 +196,19 @@ class BasicInput extends React.Component {
                     {...getFieldProps('poi')}
                     clear
                     editable={false}
-                    placeholder="请选择地址"
+                    placeholder="请选择公司所在地址"
                     onClick={this.onPOIClick}
                 >地址</InputItem>
 
                 <InputItem
                     {...getFieldProps('description')}
                     clear
-                    placeholder="请输入描述"
+                    placeholder="请输入公司信息描述"
                 >描述</InputItem>
                 <InputItem
                     {...getFieldProps('note')}
                     clear
-                    placeholder="请输入备注"
+                    placeholder="请输入备注信息"
                 >备注</InputItem>
 
                 <Picker

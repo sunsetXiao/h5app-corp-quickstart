@@ -130,7 +130,7 @@ class CompanyDetail extends React.Component {
                 <div className="header">
                     <div className="header-title"> {company.name}</div>
                     <div className="header-content"> 行业：{company.industry_name}</div>
-                    <div className="header-content"> 描述：{company.description}</div>
+                    <div className="header-content"> 公司信息描述：{company.description}</div>
                 </div>
                 <div className="body">
                     <div>
