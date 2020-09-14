@@ -95,7 +95,7 @@ class MTabBar extends React.Component {
               });
             }}
           >
-            <MainTab />
+            <MainTab {...this.props}/>
           </TabBar.Item>
           <TabBar.Item
             icon={

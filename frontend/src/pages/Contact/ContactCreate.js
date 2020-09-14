@@ -38,7 +38,9 @@ class BasicInput extends React.Component {
     }
 
     render() {
+        // console.log( this.props)
         const {getFieldProps, getFieldError} = this.props.form;
+        const data = this.props.location.state && this.props.location.state.data;
 
         return (<form>
             <List
@@ -51,6 +53,7 @@ class BasicInput extends React.Component {
                         rules: [
                             {required: true, message: '请输入姓名'}
                         ],
+                        initialValue: data && data.NAME
                     })}
                     clear
                     error={!!getFieldError('name')}
@@ -59,22 +62,30 @@ class BasicInput extends React.Component {
 
 
                 <InputItem
-                    {...getFieldProps('address')}
+                    {...getFieldProps('address', {
+                        initialValue: data && data.ADDRESS
+                    })}
                     clear
                     placeholder="请输入地址"
                 >地址</InputItem>
                 <InputItem
-                    {...getFieldProps('mobile')}
+                    {...getFieldProps('mobile', {
+                        initialValue: data && data.MPHONE
+                    })}
                     clear
                     placeholder="请输入手机号"
                 >手机</InputItem>
                 <InputItem
-                    {...getFieldProps('phone')}
+                    {...getFieldProps('phone', {
+                        initialValue: data && data.PHONE
+                    })}
                     clear
                     placeholder="请输入固定电话"
                 >固定电话</InputItem>
                 <InputItem
-                    {...getFieldProps('position')}
+                    {...getFieldProps('position', {
+                        initialValue: data && data.POSITION
+                    })}
                     clear
                     placeholder="请输入职位"
                 >职位</InputItem>
