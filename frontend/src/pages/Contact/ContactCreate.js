@@ -26,7 +26,8 @@ class BasicInput extends React.Component {
                 })
                     .then(res => res.json())
                     .then(result => {
-
+                        const state = this.props.location.state;
+                        this.props.history.replace(state.pathname, state)
                     })
             } else {
                 // alert('Validation failed');

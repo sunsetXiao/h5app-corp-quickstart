@@ -72,6 +72,7 @@ class ContactDetail extends React.Component {
 
     render() {
         const contact = this.state.contact;
+
         return (
             <div style={{width: '100%', top: 0}}>
                 <div className="header">
@@ -80,7 +81,6 @@ class ContactDetail extends React.Component {
                     <div className="header-content"> 手机：{contact.mobile}</div>
                 </div>
                 <div className="body">
-                    {/*<TabExample contact={contact}/>*/}
                     <div>
                         <WhiteSpace/>
                         <StickyContainer>

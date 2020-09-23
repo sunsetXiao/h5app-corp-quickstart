@@ -51,9 +51,9 @@ class MainTab extends React.Component {
         console.log(ele)
         console.log(this.props)
         if (ele.text === "添加公司") {
-            this.props.history.push("/create/company")
+            this.props.history.push("/create/company", {pathname: "/"})
         } else if (ele.text === "添加联系人") {
-            this.props.history.push("/create/contact")
+            this.props.history.push("/create/contact", {pathname: "/"})
         } else {
             if (dd.env.platform !== 'notInDingTalk') {
                 const data = await dd.biz.util.scanCard({
@@ -82,7 +82,8 @@ class MainTab extends React.Component {
                 });
 
                 this.props.history.push("/create/contact", {
-                    data
+                    data,
+                    pathname: "/"
                 })
             }
         }
@@ -107,8 +108,9 @@ class MainTab extends React.Component {
                     <Card.Header
                         title="新增公司"
                         // thumb="https://zos.alipayobjects.com/rmsportal/psUFoAMjkCcjqtUCNPxB.svg"
-                        extra={<Link
-                            to={{pathname: "/create/company", state: {index: 0, pathname: "/"}}}><span>更多</span></Link>}
+                        // extra={<Link
+                        //     to={{pathname: "/create/company", state: {index: 0, pathname: "/"}}}><span>更多</span></Link>}
+                        extra={<span>更多</span>}
                     />
                     <Card.Body>
                         <Carousel
@@ -138,7 +140,7 @@ class MainTab extends React.Component {
                         // extra={<span>更多</span>}
                     />
                     <Card.Body>
-                        <div className="sub-title">No border</div>
+                        {/*<div className="sub-title">No border</div>*/}
                         <Grid data={this.state.gridData} hasLine={false} onClick={this.onGridClick.bind(this)}/>
                     </Card.Body>
                 </Card>
