@@ -80,7 +80,18 @@ class MainTab extends React.Component {
                         // alert(JSON.stringify(err));
                     },
                 });
+                let responseJson;
+                if (data.COMPANY) {
+                    const response = (await fetch(host + '/company/search', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({query: data.COMPANY})
+                    }));
 
+                    responseJson = await response.json();
+                }
                 this.props.history.push("/create/contact", {
                     ... data,
                     name: data.NAME,
@@ -88,6 +99,7 @@ class MainTab extends React.Component {
                     mobile: data.MPHONE,
                     phone: data.PHONE,
                     position: data.POSITION,
+                    company: responseJson && responseJson.result[0],
                     pathname: "/"
                 })
             }
