@@ -59,19 +59,21 @@ class Detail extends React.Component {
     // }
 
     onNameClick = async (name) => {
-        const res = await fetch(`https://meci.market.alicloudapi.com/MarketECI/Search?keyword=${name}`, {
-            method: 'GET',
-            headers: {
-                'Authorization': 'APPCODE 76688c19d6684e7c89c39f3eb90fd4b9'
-            },
-        });
-
-        const result = await res.json();
-
-        this.setState({
-            result: result.Result && result.Result.slice(0, 3),
-            modal: true,
-        })
+        // const res = await fetch(`http://enterprise.market.alicloudapi.com/ai_market/ai_enterprise_knowledge/enterprise_simple/v2?STRING=${name}&PAGE=1`, {
+        //     method: 'GET',
+        //     headers: {
+        //         'Authorization': 'APPCODE 76688c19d6684e7c89c39f3eb90fd4b9'
+        //     },
+        // });
+        //
+        // const result = await res.json();
+        //
+        // console.log('result', result)
+        // alert(JSON.stringify(result))
+        // this.setState({
+        //     result: result.Result && result.Result.slice(0, 3),
+        //     modal: true,
+        // })
     }
 
     render() {
@@ -79,7 +81,7 @@ class Detail extends React.Component {
 
         return (<div style={{width: "100%"}}>
             <List renderHeader={() => '基本信息'} className="my-list">
-                <Item onClick={() => this.onNameClick(company.name)}><Brief>名称(点击查询工商信息)</Brief> {company.name || '-'} </Item>
+                <Item onClick={() => this.onNameClick(company.name)}><Brief>名称</Brief> {company.name || '-'} </Item>
                 <Modal
                     visible={this.state.modal}
                     transparent

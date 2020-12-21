@@ -1,5 +1,5 @@
 import React from 'react';
-import {List, InputItem, Switch, Stepper, Range, Button, Picker} from 'antd-mobile';
+import {List, InputItem, Modal, Button, Picker} from 'antd-mobile';
 import {createForm} from 'rc-form';
 import config from '../../config.js'
 import * as dd from "dingtalk-jsapi/index";
@@ -140,9 +140,40 @@ class BasicInput extends React.Component {
                 poi: result
             })
         }
+    }
 
+    onNameExtraClick = async () => {
+        const { name } = this.props.form.getFieldsValue();
+        const res = await fetch(`http://enterprise.market.alicloudapi.com/ai_market/ai_enterprise_knowledge/enterprise_simple/v2?STRING=${name}&PAGE=1`, {
+            method: 'GET',
+            headers: {
+                'Authorization': 'APPCODE 76688c19d6684e7c89c39f3eb90fd4b9'
+            },
+        });
 
-        console.log(this.props.form)
+        const result = await res.json();
+
+        const actions = result.企业工商数据实体信息.map(ele => ({
+            text: ele.企业名称,
+            onPress: () => this.queryCompany(ele.企业名称)
+        }))
+
+        Modal.operation(actions);
+    }
+
+    queryCompany = async (name) => {
+        const res = await fetch(`http://enterprise.market.alicloudapi.com/ai_market/ai_enterprise_knowledge/enterprise_simple/v1?STRING=${name}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': 'APPCODE 76688c19d6684e7c89c39f3eb90fd4b9'
+            },
+        });
+
+        const result = await res.json();
+        console.log("resultsss", result)
+        this.props.form.setFieldsValue({
+            // note: result.ENTERPRISE_CAPITAL
+        })
     }
     // validateAccount = (rule, value, callback) => {
     //     if (value && value.length > 4) {
@@ -177,6 +208,8 @@ class BasicInput extends React.Component {
                     clear
                     error={!!getFieldError('name')}
                     placeholder="请输入公司名"
+                    extra="工商信息补全"
+                    onExtraClick={() => this.onNameExtraClick()}
                 >名称</InputItem>
 
                 <Picker
