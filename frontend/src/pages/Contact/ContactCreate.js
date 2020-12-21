@@ -14,20 +14,21 @@ class BasicInput extends React.Component {
     onSubmit = () => {
         this.props.form.validateFields({force: true}, (error) => {
             if (!error) {
-                const {name, address, mobile, phone, position} = this.props.form.getFieldsValue();
+                const {name, address, mobile, phone, position, company} = this.props.form.getFieldsValue();
                 fetch(host + '/contact/create', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        name, address, mobile, phone, position
+                        name, address, mobile, phone, position, company: company && { id: this.props.location.state.company.id}
                     })
                 })
                     .then(res => res.json())
                     .then(result => {
-                        const state = this.props.location.state;
-                        this.props.history.replace(state.pathname, state)
+                        // const state = this.props.location.state;
+                        // this.props.history.replace(state.pathname, state)
+                        this.props.history.goBack();
                     })
             } else {
                 // alert('Validation failed');
@@ -41,7 +42,7 @@ class BasicInput extends React.Component {
     render() {
         // console.log( this.props)
         const {getFieldProps, getFieldError} = this.props.form;
-        const data = this.props.location.state && this.props.location.state.data;
+        const data = this.props.location.state;
 
         return (<form>
             <List
@@ -54,7 +55,7 @@ class BasicInput extends React.Component {
                         rules: [
                             {required: true, message: '请输入姓名'}
                         ],
-                        initialValue: data && data.NAME
+                        initialValue: data && data.name
                     })}
                     clear
                     error={!!getFieldError('name')}
@@ -64,32 +65,47 @@ class BasicInput extends React.Component {
 
                 <InputItem
                     {...getFieldProps('address', {
-                        initialValue: data && data.ADDRESS
+                        initialValue: data && data.address
                     })}
                     clear
                     placeholder="请输入地址"
                 >地址</InputItem>
                 <InputItem
                     {...getFieldProps('mobile', {
-                        initialValue: data && data.MPHONE
+                        initialValue: data && data.mobile
                     })}
                     clear
                     placeholder="请输入手机号"
                 >手机</InputItem>
                 <InputItem
                     {...getFieldProps('phone', {
-                        initialValue: data && data.PHONE
+                        initialValue: data && data.phone
                     })}
                     clear
                     placeholder="请输入固定电话"
                 >固定电话</InputItem>
                 <InputItem
                     {...getFieldProps('position', {
-                        initialValue: data && data.POSITION
+                        initialValue: data && data.position
                     })}
                     clear
                     placeholder="请输入职位"
                 >职位</InputItem>
+
+                <InputItem
+                    {...getFieldProps('company', {
+                        initialValue: data && data.company && data.company.name
+                    })}
+                    editable={false}
+                    placeholder="请选择公司"
+                    onClick={() => {
+                        console.log(this.props.form.getFieldsValue())
+                        this.props.history.push("/select/company", {
+                            pathname: `/create/contact`,
+                            ...this.props.form.getFieldsValue()
+                        })
+                    }}
+                >公司</InputItem>
 
                 <Item>
                     <Button type="primary" size="small" inline onClick={this.onSubmit}>提交</Button>

@@ -50,6 +50,13 @@ public class ContactController {
         contact.setPosition(contactCreateInput.getPosition());
         contact.setImage(contactCreateInput.getImage());
 
+        if (contactCreateInput.getCompany() != null) {
+            List<Company> companyList = new ArrayList<>();
+            Company company = companyRepository.getOne(contactCreateInput.getCompany().getId());
+            companyList.add(company);
+
+            contact.setCompanyList(companyList);
+        }
         contactRepository.save(contact);
         ContactDto contactDto = new ContactDto(contact);
         return ServiceResult.success(contactDto);

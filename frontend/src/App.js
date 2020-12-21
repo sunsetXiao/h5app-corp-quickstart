@@ -20,6 +20,7 @@ import CompanyCreate from "./pages/Company/CompanyCreate";
 import ContactDetail from "./pages/Contact/ContactDetail";
 import ContactCreate from "./pages/Contact/ContactCreate";
 import ContactSelect from "./components/ContactSelect";
+import CompanySelect from "./components/CompanySelect";
 
 const host = config.host;
 
@@ -265,6 +266,7 @@ class H5AppQS extends React.Component {
                 <Route exact path="/contact/:id" component={ContactDetail}/>
                 <Route exact path="/create/contact" component={ContactCreate}/>
                 <Route exact path="/select/contact" component={ContactSelect}/>
+                <Route exact path="/select/company" component={CompanySelect}/>
             </Switch>
         )
 

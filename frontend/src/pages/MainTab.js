@@ -82,7 +82,12 @@ class MainTab extends React.Component {
                 });
 
                 this.props.history.push("/create/contact", {
-                    data,
+                    ... data,
+                    name: data.NAME,
+                    address: data.ADDRESS,
+                    mobile: data.MPHONE,
+                    phone: data.PHONE,
+                    position: data.POSITION,
                     pathname: "/"
                 })
             }
