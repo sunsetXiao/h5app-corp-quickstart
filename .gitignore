@@ -17,3 +17,5 @@ node_modules/
 .project
 .classpath
 .prettierrc
+
+package-lock.json
